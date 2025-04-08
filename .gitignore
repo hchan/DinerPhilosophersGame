@@ -8,12 +8,9 @@
 [Mm]emoryCaptures/
 
 # Unity 2021+ cache directories
-UserSettings/
-.vscode/
 .vs/
 .idea/
 *.csproj
-*.unityproj
 *.sln
 *.suo
 *.tmp

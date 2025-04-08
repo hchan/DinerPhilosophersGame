@@ -41,9 +41,7 @@ jobs:
           echo "Inspecting build..."
           # Add your inspection commands here
           # For example, you can list the contents of the build directory
-          ls -lart build
-          ls -lart Build
-          find Build
+          find build/WebGL
 
 
 

@@ -42,11 +42,33 @@ jobs:
           # Add your inspection commands here
           # For example, you can list the contents of the build directory
           find build/WebGL
+          # example output
+            # build/WebGL
+            # build/WebGL/WebGL
+            # build/WebGL/WebGL/index.html
+            # build/WebGL/WebGL/TemplateData
+            # build/WebGL/WebGL/TemplateData/MemoryProfiler.png
+            # build/WebGL/WebGL/TemplateData/style.css
+            # build/WebGL/WebGL/TemplateData/progress-bar-empty-dark.png
+            # build/WebGL/WebGL/TemplateData/progress-bar-full-light.png
+            # build/WebGL/WebGL/TemplateData/fullscreen-button.png
+            # build/WebGL/WebGL/TemplateData/progress-bar-empty-light.png
+            # build/WebGL/WebGL/TemplateData/favicon.ico
+            # build/WebGL/WebGL/TemplateData/unity-logo-light.png
+            # build/WebGL/WebGL/TemplateData/webmemd-icon.png
+            # build/WebGL/WebGL/TemplateData/progress-bar-full-dark.png
+            # build/WebGL/WebGL/TemplateData/unity-logo-title-footer.png
+            # build/WebGL/WebGL/TemplateData/unity-logo-dark.png
+            # build/WebGL/WebGL/Build
+            # build/WebGL/WebGL/Build/WebGL.wasm.br
+            # build/WebGL/WebGL/Build/WebGL.framework.js.br
+            # build/WebGL/WebGL/Build/WebGL.loader.js
+            # build/WebGL/WebGL/Build/WebGL.data.br
 
 
 
       # Output
-    #   - uses: actions/upload-artifact@v3
-    #     with:
-    #         name: Build
-    #         path: build
+      - uses: actions/upload-artifact@v4
+        with:
+            name: Build
+            path: build

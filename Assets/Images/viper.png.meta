@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      viper_0: 3343045239308638751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

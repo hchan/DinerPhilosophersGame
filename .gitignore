@@ -18,6 +18,9 @@
 *.userprefs
 *.pidb
 *.booproj
+*.zip
+build/
+WebGL Builds/
 
 # Rider
 *.sln.iml

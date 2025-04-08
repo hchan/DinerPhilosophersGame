@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      tigress_0: -7925489150201364586
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

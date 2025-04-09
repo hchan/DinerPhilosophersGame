@@ -8,7 +8,7 @@ public class Test : MonoBehaviour
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
     // Start is called before the first frame update
-    void Start()
+    void StartSKIP()
     {
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)

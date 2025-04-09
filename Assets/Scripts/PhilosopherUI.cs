@@ -3,41 +3,31 @@ using UnityEngine;
 public class PhilosopherUI : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private float defaultAlpha = 0.25f;
-    private float highlightAlpha = 0.5f;
-    private float selectedAlpha = 1.0f;
-
+    private GameManager gameManager;
     void Start()
     {
+        // Access the GameManager singleton
+        gameManager = GameManager.Instance;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
-        {
-            SetAlpha(defaultAlpha);
-        }
     }
 
     void OnMouseDown()
     {
-        SetAlpha(selectedAlpha);
+        SetAlpha(gameManager.selectedAlpha);
     }
 
     void OnMouseEnter()
     {
-        SetAlpha(highlightAlpha);
+        SetAlpha(gameManager.highlightAlpha);
     }
 
     void OnMouseExit()
     {
-        SetAlpha(defaultAlpha);
+        SetAlpha(gameManager.defaultAlpha);
     }
 
     void SetAlpha(float alpha)
     {
-        if (spriteRenderer != null)
-        {
-            Color color = spriteRenderer.color;
-            color.a = alpha;
-            spriteRenderer.color = color;
-        }
+        gameManager.SetAlpha(gameObject, alpha);
     }
 }

@@ -231,7 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 144337097}
   - component: {fileID: 144337098}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: chopstick3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445148158}
   - component: {fileID: 445148157}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: chopstick0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,6 +685,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77bb5e6457ea1cd47b740402f77dda72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chopsticks: []
+  philosophers: []
+  defaultAlpha: 0.5
+  highlightAlpha: 0.75
+  selectedAlpha: 1
 --- !u!1 &784843898
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,8 +745,8 @@ GameObject:
   - component: {fileID: 1027868860}
   - component: {fileID: 1027868862}
   - component: {fileID: 1027868861}
-  m_Layer: 5
-  m_Name: Text (0)
+  m_Layer: 6
+  m_Name: chopstickText0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -966,7 +971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1058831621}
   - component: {fileID: 1058831622}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: chopstick2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1054,8 +1059,8 @@ GameObject:
   - component: {fileID: 1152216821}
   - component: {fileID: 1152216823}
   - component: {fileID: 1152216822}
-  m_Layer: 5
-  m_Name: Text (1)
+  m_Layer: 6
+  m_Name: chopstickText1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1412,8 +1417,9 @@ GameObject:
   - component: {fileID: 1578355040}
   - component: {fileID: 1578355039}
   - component: {fileID: 1578355041}
-  m_Layer: 0
-  m_Name: tigress
+  - component: {fileID: 1578355042}
+  m_Layer: 7
+  m_Name: philosopher0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1501,6 +1507,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553a02f46353fb342b787f86c5c0cf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!61 &1578355042
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578355038}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 0.98}
+    newSize: {x: 1, y: 0.98}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 0.98}
+  m_EdgeRadius: 0
 --- !u!1 &1670239424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1511,7 +1563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1670239425}
   - component: {fileID: 1670239426}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: chopstick4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1599,8 +1651,8 @@ GameObject:
   - component: {fileID: 1726226945}
   - component: {fileID: 1726226947}
   - component: {fileID: 1726226946}
-  m_Layer: 5
-  m_Name: Text (2)
+  m_Layer: 6
+  m_Name: chopstickText2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1827,8 +1879,8 @@ GameObject:
   - component: {fileID: 1944238253}
   - component: {fileID: 1944238255}
   - component: {fileID: 1944238254}
-  m_Layer: 5
-  m_Name: Text (4)
+  m_Layer: 6
+  m_Name: chopstickText4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1962,7 +2014,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2081261277}
   - component: {fileID: 2081261278}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: chopstick1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2050,8 +2102,8 @@ GameObject:
   - component: {fileID: 2134804827}
   - component: {fileID: 2134804829}
   - component: {fileID: 2134804828}
-  m_Layer: 5
-  m_Name: Text (3)
+  m_Layer: 6
+  m_Name: chopstickText3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

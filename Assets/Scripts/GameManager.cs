@@ -6,82 +6,62 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     // Singleton instance
-    private static GameManager _instance;
-     public List<GameObject> chopsticks = new List<GameObject>();
-    public List<GameObject> philosophers = new List<GameObject>();
+    public static GameManager Instance;
+
+    public Dictionary<string, GameObject> objectCache = new Dictionary<string, GameObject>();
+
+    public int numPhilosophers = 5; // Number of philosophers
     public float defaultAlpha = 0.50f;
     public float highlightAlpha = 0.75f;
     public float selectedAlpha = 1.0f;
-    public static GameManager Instance
-    {
-        get
-        {
-            // If the instance is null, try to find it in the scene
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GameManager>();
 
-                // If no instance is found, create a new GameManager object
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("GameManager");
-                    _instance = go.AddComponent<GameManager>();
-                }
-            }
-            return _instance;
-        }
-    }
-
+    public int selectedPhilosopherId = -1; // -1 means no philosopher is selected
+    
     // Ensure the instance is only set once
     private void Awake()
     {
-        // If an instance already exists, destroy this object (to maintain only one instance)
-        if (_instance != null && _instance != this)
+        Instance = this;
+        CacheAllObjects();
+    }
+
+    private void CacheAllObjects()
+    {
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        foreach (GameObject obj in allObjects)
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject); // Preserve the instance across scene changes
+            if (!objectCache.ContainsKey(obj.name))
+            {
+                objectCache[obj.name] = obj;
+            }
         }
     }
 
-   
+    public GameObject Get(string name)
+    {
+        return objectCache.TryGetValue(name, out var obj) ? obj : null;
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("GameManager started");
+        ResetAlpha();
+       
 
-        int chopstickLayer = LayerMask.NameToLayer("chopstick");
-        int philosopherLayer = LayerMask.NameToLayer("philosopher");
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+    }
 
-        // Cache the chopstick and philosopher GameObjects
-        foreach (GameObject obj in allObjects)
+    public void ResetAlpha()
+    {
+        
+        // loop through objectCache and set alpha to defaultAlpha
+        foreach (var obj in objectCache.Values)
         {
-            if (obj.layer == chopstickLayer)
+            // check if obj is a gameobject
+            if (obj.name.Contains("chopstick") || obj.name.Contains("philosopher"))
             {
-                chopsticks.Add(obj);
-                Debug.Log($"Found chopstick: {obj.name}");
+                SetAlpha(obj, defaultAlpha);
             }
-            else if (obj.layer == philosopherLayer)
-            {
-                philosophers.Add(obj);
-                Debug.Log($"Found philosopher: {obj.name}");
-            }
-        }
-
-        // Set default alpha for each chopstick and philosopher
-        foreach (GameObject chopstick in chopsticks)
-        {
-            SetAlpha(chopstick, defaultAlpha);
-        }
-
-        foreach (GameObject philosopher in philosophers)
-        {
-            SetAlpha(philosopher, defaultAlpha);
         }
     }
 

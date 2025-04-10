@@ -30,6 +30,7 @@ public class PhilosopherUI : MonoBehaviour
         SetAlpha(gameManager.selectedAlpha);
         gameManager.Get("instructions1").SetActive(false);
         gameManager.Get("pickupChopsticksText").SetActive(true);
+        gameManager.Get("availablePickupChopsticksDropdown").SetActive(true);
     }
 
     void OnMouseEnter()

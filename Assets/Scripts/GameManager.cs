@@ -50,14 +50,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
         ResetAlpha();
-        Get("pickupChopsticksText").SetActive(false);
-        Get("availablePickupChopsticksDropdown").SetActive(false);
+//        Get("pickupChopsticksText").SetActive(false);
+ //       Get("availablePickupChopsticksDropdown").SetActive(false);
         for (int i = 0; i < numPhilosophers; i++)
         {
             chopstickData[i] = new ChopstickData(GetRightChopstickId(i), GetLeftChopstickId(i));
         }
-        availablePickupChopsticksDropdown = Get("availablePickupChopsticksDropdown").GetComponent<TMP_Dropdown>();
-        Debug.Log("availablePickupChopsticksDropdown: " + availablePickupChopsticksDropdown.options.Count);
+//        availablePickupChopsticksDropdown = Get("availablePickupChopsticksDropdown").GetComponent<TMP_Dropdown>();
+  //      Debug.Log("availablePickupChopsticksDropdown: " + availablePickupChopsticksDropdown.options.Count);
     }
 
     public void ResetAlpha()

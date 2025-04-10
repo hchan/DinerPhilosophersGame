@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public Dictionary<string, GameObject> objectCache = new Dictionary<string, GameObject>();
+    public Dictionary<int, ChopstickData> chopstickData = new Dictionary<int, ChopstickData>();
 
+    public TMP_Dropdown availablePickupChopsticksDropdown;
     public int numPhilosophers = 5; // Number of philosophers
     public float defaultAlpha = 0.50f;
     public float highlightAlpha = 0.75f;
@@ -48,8 +51,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager started");
         ResetAlpha();
         Get("pickupChopsticksText").SetActive(false);
-
-
+        for (int i = 0; i < numPhilosophers; i++)
+        {
+            chopstickData[i] = new ChopstickData(GetLeftChopstickId(i), GetRightChopstickId(i));
+        }
+        availablePickupChopsticksDropdown = Get("availablePickupChopsticksDropdown").GetComponent<TMP_Dropdown>();
+        Debug.Log("availablePickupChopsticksDropdown: " + availablePickupChopsticksDropdown.options.Count);
     }
 
     public void ResetAlpha()
@@ -109,5 +116,14 @@ public class GameManager : MonoBehaviour
         var color = renderer.material.color;
         color.a = alpha;
         renderer.material.color = color;
+    }
+
+
+    public int GetLeftChopstickId(int philosopherId) {
+        return (philosopherId+1) % numPhilosophers;
+    }
+
+    public int GetRightChopstickId(int philosopherId) {
+        return philosopherId;
     }
 }

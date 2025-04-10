@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PhilosopherUI : MonoBehaviour
 {
@@ -19,9 +21,7 @@ public class PhilosopherUI : MonoBehaviour
         string name = gameObject.name;
         gameObject.name.Substring(name.Length - 1, 1);
         philosopherId = int.Parse(name.Substring(name.Length - 1, 1));
-
-        leftChopstickId =  (philosopherId+1) % gameManager.numPhilosophers;
-        rightChopstickId = philosopherId;
+        
     }
 
     void OnMouseDown()
@@ -35,11 +35,20 @@ public class PhilosopherUI : MonoBehaviour
     void OnMouseEnter()
     {
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
-        if (gameManager.selectedPhilosopherId == philosopherId)
+        gameManager.availablePickupChopsticksDropdown.ClearOptions();
+        for (int i = 0; i < gameManager.chopstickData[philosopherId].availablePickupChopsticks.Count; i++)
         {
-           return;
+            Debug.Log("Adding option: " + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("chopstick" + 
+            gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
+            gameManager.availablePickupChopsticksDropdown.options.Add(option);
         }
-        SetAlpha(gameManager.highlightAlpha);
+        
+        if (gameManager.selectedPhilosopherId != philosopherId)
+        {
+           SetAlpha(gameManager.highlightAlpha);
+        }
+        
     }
 
     void OnMouseExit()
@@ -51,13 +60,21 @@ public class PhilosopherUI : MonoBehaviour
         }
     }
 
+
+    public int GetLeftChopstickId() {
+        return gameManager.GetLeftChopstickId(philosopherId);
+    }
+
+    public int GetRightChopstickId() {
+        return gameManager.GetRightChopstickId(philosopherId);
+    }
     void SetAlpha(float alpha)
     {
         gameManager.ResetAlpha();
         gameManager.SetAlpha(gameObject, alpha);
-        gameManager.SetAlpha(gameManager.Get("chopstick" + leftChopstickId), alpha);
-        gameManager.SetAlpha(gameManager.Get("chopstickText" + leftChopstickId), alpha);
-        gameManager.SetAlpha(gameManager.Get("chopstick" + rightChopstickId), alpha);
-        gameManager.SetAlpha(gameManager.Get("chopstickText" + rightChopstickId), alpha);
+        gameManager.SetAlpha(gameManager.Get("chopstick" + GetLeftChopstickId()), alpha);
+        gameManager.SetAlpha(gameManager.Get("chopstickText" + GetLeftChopstickId()), alpha);
+        gameManager.SetAlpha(gameManager.Get("chopstick" + GetRightChopstickId()), alpha);
+        gameManager.SetAlpha(gameManager.Get("chopstickText" + GetRightChopstickId()), alpha);
     }
 }

@@ -47,7 +47,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager started");
         ResetAlpha();
-       
+        Get("pickupChopsticksText").SetActive(false);
+
 
     }
 

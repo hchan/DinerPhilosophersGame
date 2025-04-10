@@ -28,6 +28,8 @@ public class PhilosopherUI : MonoBehaviour
     {
         gameManager.selectedPhilosopherId = philosopherId;
         SetAlpha(gameManager.selectedAlpha);
+        gameManager.Get("instructions1").SetActive(false);
+        gameManager.Get("pickupChopsticksText").SetActive(true);
     }
 
     void OnMouseEnter()

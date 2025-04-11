@@ -51,13 +51,11 @@ public class PhilosopherUI : MonoBehaviour
         // Set the cursor to the hoverCursor
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
 
-        // Get the availableChopsticksSelector GameObject
-        GameObject availableChopsticksSelector = gameManager.Get("availableChopsticksSelector");
+        GameObject availableChopsticksPickupSelector = gameManager.Get("availableChopsticksPickupSelector");
  
-        // Check that the availableChopsticksSelector is not null
-        if (availableChopsticksSelector == null)
+        if (availableChopsticksPickupSelector == null)
         {
-            Debug.LogError("availableChopsticksSelector not found!");
+            Debug.LogError("availableChopsticksPickupSelector not found!");
             return;
         }
         gameManager.Get("philosopherSelectedText").GetComponent<TMP_Text>().text = 
@@ -72,18 +70,7 @@ public class PhilosopherUI : MonoBehaviour
 
             label.text = "chopstick" + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i];
 
-/*
-            // Set the button as a child of availableChopsticksSelector (use Transform for proper hierarchy management)
-            buttonObj.transform.SetParent(availableChopsticksSelector.transform, true); // Use 'false' to keep local position
-
-            buttonObj = gameManager.Get("chopstickAvailable1");
-            label = buttonObj.GetComponentInChildren<TMP_Text>();
-
-            label.text = "chopstick" + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i];
-*/
-
-            // Set the button as a child of availableChopsticksSelector (use Transform for proper hierarchy management)
-            buttonObj.transform.SetParent(availableChopsticksSelector.transform, false); // Use 'false' to keep local position
+            buttonObj.transform.SetParent(availableChopsticksPickupSelector.transform, false); // Use 'false' to keep local position
 
 
         }

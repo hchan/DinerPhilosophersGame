@@ -28,6 +28,7 @@ public class PhilosopherUI : MonoBehaviour
     {
         gameManager.selectedPhilosopherId = philosopherId;
         SetAlpha(gameManager.selectedAlpha);
+        
         /*
         gameManager.Get("instructions1").SetActive(false);
         gameManager.Get("pickupChopsticksText").SetActive(true);
@@ -58,7 +59,8 @@ public class PhilosopherUI : MonoBehaviour
             Debug.LogError("availableChopsticksSelector not found!");
             return;
         }
-
+        gameManager.Get("philosopherSelectedText").GetComponent<TMP_Text>().text = 
+            gameManager.philosopherNames[philosopherId];
         // Loop through each available chopstick in the data
         for (int i = 0; i < gameManager.chopstickData[philosopherId].availablePickupChopsticks.Count; i++)
         {

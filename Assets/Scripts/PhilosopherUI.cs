@@ -78,7 +78,7 @@ public class PhilosopherUI : MonoBehaviour
         // If selected philosopher is not the current one, set alpha to highlight
         if (gameManager.selectedPhilosopherId != philosopherId)
         {
-            SetAlpha(gameManager.highlightAlpha);
+            SetAlpha(gameManager.fullAlpha);
         }
     }
 

@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -710, y: 513}
+  m_AnchoredPosition: {x: -750, y: 513}
   m_SizeDelta: {x: 205.21, y: 59.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &27081205
@@ -2824,7 +2824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553a02f46353fb342b787f86c5c0cf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverCursor: {fileID: 2800000, guid: e1eaac282f60e564e809efdf2d3e8035, type: 3}
+  hoverCursor: {fileID: 0}
 --- !u!61 &1506417811
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3108,7 +3108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 553a02f46353fb342b787f86c5c0cf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverCursor: {fileID: 2800000, guid: e1eaac282f60e564e809efdf2d3e8035, type: 3}
+  hoverCursor: {fileID: 0}
 --- !u!61 &1578355042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3415,7 +3415,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 513}
+  m_AnchoredPosition: {x: -540, y: 513}
   m_SizeDelta: {x: 205.21, y: 59.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1745247590

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public int numPhilosophers = 5; // Number of philosophers
     public float defaultAlpha = 0.50f;
     public float highlightAlpha = 0.75f;
-    public float selectedAlpha = 1.0f;
+    public float fullAlpha = 1.0f;
 
     public int selectedPhilosopherId = -1; // -1 means no philosopher is selected
     

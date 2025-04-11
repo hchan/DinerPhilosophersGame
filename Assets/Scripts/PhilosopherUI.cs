@@ -51,7 +51,7 @@ public class PhilosopherUI : MonoBehaviour
 
         // Get the availableChopsticksSelector GameObject
         GameObject availableChopsticksSelector = gameManager.Get("availableChopsticksSelector");
-
+ 
         // Check that the availableChopsticksSelector is not null
         if (availableChopsticksSelector == null)
         {
@@ -64,17 +64,24 @@ public class PhilosopherUI : MonoBehaviour
         {
             Debug.Log("Adding option: " + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
 
-            // Get the button prefab (ensure it's already a properly set-up button)
-            GameObject buttonObj = gameManager.Get("chopstickAvailable0");
+            GameObject buttonObj = gameManager.Get("chopstickAvailable" + i);
+            TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
 
-            // Store the button's original scale before reparenting
-            Vector3 originalScale = buttonObj.transform.localScale;
+            label.text = "chopstick" + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i];
+
+/*
+            // Set the button as a child of availableChopsticksSelector (use Transform for proper hierarchy management)
+            buttonObj.transform.SetParent(availableChopsticksSelector.transform, true); // Use 'false' to keep local position
+
+            buttonObj = gameManager.Get("chopstickAvailable1");
+            label = buttonObj.GetComponentInChildren<TMP_Text>();
+
+            label.text = "chopstick" + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i];
+*/
 
             // Set the button as a child of availableChopsticksSelector (use Transform for proper hierarchy management)
             buttonObj.transform.SetParent(availableChopsticksSelector.transform, false); // Use 'false' to keep local position
 
-            // Restore the original scale to ensure it doesn't get distorted
-           // buttonObj.transform.localScale = originalScale;
 
         }
 

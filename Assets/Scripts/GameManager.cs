@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public Dictionary<string, GameObject> objectCache = new Dictionary<string, GameObject>();
     public Dictionary<int, ChopstickData> chopstickData = new Dictionary<int, ChopstickData>();
 
-    public TMP_Dropdown availablePickupChopsticksDropdown;
     public int numPhilosophers = 5; // Number of philosophers
     public float defaultAlpha = 0.50f;
     public float highlightAlpha = 0.75f;

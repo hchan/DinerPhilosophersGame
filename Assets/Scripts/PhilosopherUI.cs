@@ -21,7 +21,7 @@ public class PhilosopherUI : MonoBehaviour
         string name = gameObject.name;
         gameObject.name.Substring(name.Length - 1, 1);
         philosopherId = int.Parse(name.Substring(name.Length - 1, 1));
-        
+
     }
 
     void OnMouseDown()
@@ -36,20 +36,32 @@ public class PhilosopherUI : MonoBehaviour
     void OnMouseEnter()
     {
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
-        gameManager.availablePickupChopsticksDropdown.ClearOptions();
+        GameObject availableChopsticksSelector = gameManager.Get("availableChopsticksSelector");
         for (int i = 0; i < gameManager.chopstickData[philosopherId].availablePickupChopsticks.Count; i++)
         {
             Debug.Log("Adding option: " + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData("chopstick" + 
-            gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
-            gameManager.availablePickupChopsticksDropdown.options.Add(option);
+            // Create the button GameObject
+            GameObject buttonObj = new GameObject("TextMeshProButton");
+
+            // Set the button as a child of the vertical layout container
+            buttonObj.transform.SetParent(availableChopsticksSelector.transform);
+
+            // Add a RectTransform to the button
+            RectTransform rectTransform = buttonObj.AddComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(160, 30); // Set the size (Width, Height)
+
+            // Add the TextMeshProUGUI component for button text
+            TextMeshProUGUI buttonText = buttonObj.AddComponent<TextMeshProUGUI>();
+            buttonText.text = "New Button";
+            buttonText.fontSize = 18;
+
         }
-        
+
         if (gameManager.selectedPhilosopherId != philosopherId)
         {
-           SetAlpha(gameManager.highlightAlpha);
+            SetAlpha(gameManager.highlightAlpha);
         }
-        
+
     }
 
     void OnMouseExit()
@@ -62,11 +74,13 @@ public class PhilosopherUI : MonoBehaviour
     }
 
 
-    public int GetLeftChopstickId() {
+    public int GetLeftChopstickId()
+    {
         return gameManager.GetLeftChopstickId(philosopherId);
     }
 
-    public int GetRightChopstickId() {
+    public int GetRightChopstickId()
+    {
         return gameManager.GetRightChopstickId(philosopherId);
     }
     void SetAlpha(float alpha)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,5 +15,11 @@ public class ChopstickData {
         availablePickupChopsticks.Add(rightChopstickId);
         availableDropChopsticks.Add(leftChopstickId);
         availableDropChopsticks.Add(rightChopstickId);
+    }
+
+    public void ConsumeAvailablePickupChopstick(int chopstickId)
+    {
+        availablePickupChopsticks.Remove(chopstickId);
+        orderPickupChopsticks.Add(chopstickId);
     }
 }

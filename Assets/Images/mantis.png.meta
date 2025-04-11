@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 68b94de6771ede44e9cd353a1f41af1e
+guid: faf8f00f49af9d2488eb1b0152a1be88
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 665313845716424348
-    second: mantis_0
+      213: -3102318951546723107
+    second: mantis 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mantis_0
+      name: mantis 1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 3
         y: 0
-        width: 62
-        height: 61
+        width: 95
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c96931eea6bab3900800000000000000
-      internalID: 665313845716424348
+      spriteID: dd46811b95952f4d0800000000000000
+      internalID: -3102318951546723107
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      mantis_0: 665313845716424348
+      mantis 1_0: -3102318951546723107
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

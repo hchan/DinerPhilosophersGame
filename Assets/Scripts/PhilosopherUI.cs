@@ -28,41 +28,63 @@ public class PhilosopherUI : MonoBehaviour
     {
         gameManager.selectedPhilosopherId = philosopherId;
         SetAlpha(gameManager.selectedAlpha);
+        /*
         gameManager.Get("instructions1").SetActive(false);
         gameManager.Get("pickupChopsticksText").SetActive(true);
         gameManager.Get("availablePickupChopsticksDropdown").SetActive(true);
+        */
+    }
+
+
+
+    // Example button click handler
+    void OnChopstickButtonClick(int index)
+    {
+        Debug.Log("Chopstick button clicked at index: " + index);
+        // Handle the button click logic (e.g., pick up chopsticks)
     }
 
     void OnMouseEnter()
     {
+        // Set the cursor to the hoverCursor
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
+
+        // Get the availableChopsticksSelector GameObject
         GameObject availableChopsticksSelector = gameManager.Get("availableChopsticksSelector");
+
+        // Check that the availableChopsticksSelector is not null
+        if (availableChopsticksSelector == null)
+        {
+            Debug.LogError("availableChopsticksSelector not found!");
+            return;
+        }
+
+        // Loop through each available chopstick in the data
         for (int i = 0; i < gameManager.chopstickData[philosopherId].availablePickupChopsticks.Count; i++)
         {
             Debug.Log("Adding option: " + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
-            // Create the button GameObject
-            GameObject buttonObj = new GameObject("TextMeshProButton");
 
-            // Set the button as a child of the vertical layout container
-            buttonObj.transform.SetParent(availableChopsticksSelector.transform);
+            // Get the button prefab (ensure it's already a properly set-up button)
+            GameObject buttonObj = gameManager.Get("chopstickAvailable0");
 
-            // Add a RectTransform to the button
-            RectTransform rectTransform = buttonObj.AddComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(160, 30); // Set the size (Width, Height)
+            // Store the button's original scale before reparenting
+            Vector3 originalScale = buttonObj.transform.localScale;
 
-            // Add the TextMeshProUGUI component for button text
-            TextMeshProUGUI buttonText = buttonObj.AddComponent<TextMeshProUGUI>();
-            buttonText.text = "New Button";
-            buttonText.fontSize = 18;
+            // Set the button as a child of availableChopsticksSelector (use Transform for proper hierarchy management)
+            buttonObj.transform.SetParent(availableChopsticksSelector.transform, false); // Use 'false' to keep local position
+
+            // Restore the original scale to ensure it doesn't get distorted
+           // buttonObj.transform.localScale = originalScale;
 
         }
 
+        // If selected philosopher is not the current one, set alpha to highlight
         if (gameManager.selectedPhilosopherId != philosopherId)
         {
             SetAlpha(gameManager.highlightAlpha);
         }
-
     }
+
 
     void OnMouseExit()
     {

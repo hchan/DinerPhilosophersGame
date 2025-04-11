@@ -33,7 +33,7 @@ public class PhilosopherUI : MonoBehaviour
     {
         // Set the cursor to the hoverCursor
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
-
+        gameManager.selectedPhilosopherId = philosopherId;
         GameObject availableChopsticksPickupSelector = gameManager.Get("availableChopsticksPickupSelector");
         GameObject availableChopsticksDropSelector = gameManager.Get("availableChopsticksDropSelector");
         GameObject orderChopsticksPickupSelector = gameManager.Get("orderChopsticksPickupSelector");
@@ -73,21 +73,31 @@ public class PhilosopherUI : MonoBehaviour
             buttonObj.transform.SetParent(availableChopsticksDropSelector.transform, false); // Use 'false' to keep local position
         }
 
-        // If selected philosopher is not the current one, set alpha to highlight
-        if (gameManager.selectedPhilosopherId != philosopherId)
+
+        for (int i = 0; i < gameManager.chopstickData[philosopherId].orderPickupChopsticks.Count; i++)
         {
-            SetAlpha(gameManager.fullAlpha);
+            int chopstickId = gameManager.chopstickData[philosopherId].orderPickupChopsticks[i];
+            GameObject buttonObj = gameManager.Get("orderChopstickPickup" + i);
+            TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
+            label.text = "chopstick" + chopstickId;
+            buttonObj.transform.SetParent(orderChopsticksPickupSelector.transform, false); // Use 'false' to keep local position
         }
+        for (int i = 0; i < gameManager.chopstickData[philosopherId].orderDropChopsticks.Count; i++)
+        {
+            int chopstickId = gameManager.chopstickData[philosopherId].orderDropChopsticks[i];
+            GameObject buttonObj = gameManager.Get("orderChopstickDrop" + i);
+            TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
+            label.text = "chopstick" + chopstickId;
+            buttonObj.transform.SetParent(orderChopsticksDropSelector.transform, false); // Use 'false' to keep local position
+        }
+
+        SetAlpha(gameManager.fullAlpha);        
     }
 
 
     void OnMouseExit()
     {
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-        if (gameManager.selectedPhilosopherId != philosopherId)
-        {
-            SetAlpha(gameManager.defaultAlpha);
-        }
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);        
     }
 
 

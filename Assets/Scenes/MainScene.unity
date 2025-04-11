@@ -631,7 +631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1191, y: -399}
+  m_AnchoredPosition: {x: 1195, y: -353}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &385175770
@@ -4098,7 +4098,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 424.76, y: 407.12}
+  m_AnchoredPosition: {x: 500, y: 407.12}
   m_SizeDelta: {x: -987.59, y: -1050.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2054592218
@@ -4121,7 +4121,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Philosopher Selected <None> - Please click on a philsopher on the left
+  m_text: Philosopher Selected <None> - Please hover over a philsopher on the left
+    and then move/remove the pickup/drop chopsticks to control the order
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

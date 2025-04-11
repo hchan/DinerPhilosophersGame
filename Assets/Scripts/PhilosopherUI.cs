@@ -26,8 +26,9 @@ public class PhilosopherUI : MonoBehaviour
 
     void OnMouseDown()
     {
-        gameManager.selectedPhilosopherId = philosopherId;
-        SetAlpha(gameManager.selectedAlpha);
+        OnMouseEnter();
+        //gameManager.selectedPhilosopherId = philosopherId;
+        //SetAlpha(gameManager.selectedAlpha);
         
         /*
         gameManager.Get("instructions1").SetActive(false);

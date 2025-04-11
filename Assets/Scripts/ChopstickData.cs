@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ChopstickData {
     public List<int> availablePickupChopsticks = new List<int>();
-    public List<int> usedPickupChopsticks = new List<int>();
+    public List<int> orderPickupChopsticks = new List<int>();
     public List<int> availableDropChopsticks = new List<int>();
-    public List<int> usedDropChopsticks = new List<int>();
+    public List<int> orderDropChopsticks = new List<int>();
 
 
     public ChopstickData(int leftChopstickId, int rightChopstickId) {

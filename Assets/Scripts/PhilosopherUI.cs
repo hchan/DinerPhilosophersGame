@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class PhilosopherUI : MonoBehaviour
 {
@@ -9,8 +10,6 @@ public class PhilosopherUI : MonoBehaviour
 
     private GameManager gameManager;
 
-    private int leftChopstickId;
-    private int rightChopstickId;
 
     private int philosopherId;
     void Start()
@@ -20,31 +19,15 @@ public class PhilosopherUI : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         string name = gameObject.name;
         gameObject.name.Substring(name.Length - 1, 1);
+        // example: "philosopher0" => philosopherId = 0
         philosopherId = int.Parse(name.Substring(name.Length - 1, 1));
-
     }
 
     void OnMouseDown()
     {
         OnMouseEnter();
-        //gameManager.selectedPhilosopherId = philosopherId;
-        //SetAlpha(gameManager.selectedAlpha);
-        
-        /*
-        gameManager.Get("instructions1").SetActive(false);
-        gameManager.Get("pickupChopsticksText").SetActive(true);
-        gameManager.Get("availablePickupChopsticksDropdown").SetActive(true);
-        */
     }
 
-
-
-    // Example button click handler
-    void OnChopstickButtonClick(int index)
-    {
-        Debug.Log("Chopstick button clicked at index: " + index);
-        // Handle the button click logic (e.g., pick up chopsticks)
-    }
 
     void OnMouseEnter()
     {
@@ -52,27 +35,42 @@ public class PhilosopherUI : MonoBehaviour
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
 
         GameObject availableChopsticksPickupSelector = gameManager.Get("availableChopsticksPickupSelector");
- 
+        GameObject availableChopsticksDropSelector = gameManager.Get("availableChopsticksDropSelector");
+        GameObject orderChopsticksPickupSelector = gameManager.Get("orderChopsticksPickupSelector");
+        GameObject orderChopsticksDropSelector = gameManager.Get("orderChopsticksDropSelector");
+
+        GameObject chopsticksHolder = gameManager.Get("chopsticksHolder");
+        // reset chopsticksHolder
+        foreach (GameObject obj in gameManager.chopsticksInChopsticksHolder)
+        {
+            obj.transform.SetParent(chopsticksHolder.transform, false); // Use 'false' to keep local position 
+        }
+   
         if (availableChopsticksPickupSelector == null)
         {
             Debug.LogError("availableChopsticksPickupSelector not found!");
             return;
         }
+        // Tigress, Monkey, Viper, Crane, Mantis
         gameManager.Get("philosopherSelectedText").GetComponent<TMP_Text>().text = 
             gameManager.philosopherNames[philosopherId];
         // Loop through each available chopstick in the data
+        // move from the chopsticksHolder to the appropriate selector
         for (int i = 0; i < gameManager.chopstickData[philosopherId].availablePickupChopsticks.Count; i++)
         {
-            Debug.Log("Adding option: " + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i]);
-
-            GameObject buttonObj = gameManager.Get("chopstickAvailable" + i);
+            int chopstickId = gameManager.chopstickData[philosopherId].availablePickupChopsticks[i];
+            GameObject buttonObj = gameManager.Get("availableChopstickPickup" + i);
             TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
-
-            label.text = "chopstick" + gameManager.chopstickData[philosopherId].availablePickupChopsticks[i];
-
+            label.text = "chopstick" + chopstickId;
             buttonObj.transform.SetParent(availableChopsticksPickupSelector.transform, false); // Use 'false' to keep local position
-
-
+        }
+        for (int i = 0; i < gameManager.chopstickData[philosopherId].availableDropChopsticks.Count; i++)
+        {
+            int chopstickId = gameManager.chopstickData[philosopherId].availableDropChopsticks[i];
+            GameObject buttonObj = gameManager.Get("availableChopstickDrop" + i);
+            TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
+            label.text = "chopstick" + chopstickId;
+            buttonObj.transform.SetParent(availableChopsticksDropSelector.transform, false); // Use 'false' to keep local position
         }
 
         // If selected philosopher is not the current one, set alpha to highlight

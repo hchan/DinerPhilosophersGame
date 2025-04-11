@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     public float fullAlpha = 1.0f;
 
     public int selectedPhilosopherId = -1; // -1 means no philosopher is selected
+
+    public List<GameObject> chopsticksInChopsticksHolder = new List<GameObject>();
     
     // Ensure the instance is only set once
     private void Awake()
@@ -36,6 +38,11 @@ public class GameManager : MonoBehaviour
             {
                 objectCache[obj.name] = obj;
             }
+        }
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("chopsticksHolder");
+        foreach (GameObject obj in objectsWithTag)
+        {
+            chopsticksInChopsticksHolder.Add(obj);
         }
     }
 

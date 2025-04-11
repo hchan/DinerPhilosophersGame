@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Test : MonoBehaviour
@@ -8,7 +9,7 @@ public class Test : MonoBehaviour
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
     // Start is called before the first frame update
-    void StartSKIP()
+    void Start()
     {
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
@@ -23,7 +24,17 @@ public class Test : MonoBehaviour
             int right = (i + 1) % NUM_PHILOSOPHERS;
             int lower = Mathf.Min(left, right); // partial ordering
             int higher = Mathf.Max(left, right); // partial ordering
-            philosophers[i] = new Philosopher(i, chopsticks[lower], chopsticks[higher], this);
+            List<int> pickupChopsticks = new List<int>
+            {
+                lower,
+                higher
+            };
+            List<int> dropChopsticks = new List<int>
+            {
+                higher,
+                lower
+            };
+            philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
             StartCoroutine(philosophers[i].Run());
         }
     }
@@ -32,17 +43,19 @@ public class Test : MonoBehaviour
     public class Philosopher
     {
         private readonly int id;
-        private readonly Chopstick leftChopstick;
-        private readonly Chopstick rightChopstick;
+       
+
+        public List<int> pickupChopsticks = new List<int>();
+        public List<int> dropChopsticks = new List<int>();
         private readonly string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
         private readonly Test test;  // Reference to Test class to call StartCoroutine
 
         // Pass MonoBehaviour reference (Test) to be able to call StartCoroutine()
-        public Philosopher(int id, Chopstick left, Chopstick right, Test test)
+        public Philosopher(int id, List<int> pickupChopsticks, List<int> dropChopsticks, Test test)
         {
             this.id = id;
-            this.leftChopstick = left;
-            this.rightChopstick = right;
+            this.pickupChopsticks = pickupChopsticks;
+            this.dropChopsticks = dropChopsticks;
             this.test = test;  // Store the reference to the 'Test' class
         }
 
@@ -66,8 +79,6 @@ public class Test : MonoBehaviour
             }
         }
 
-        public Chopstick GetLeftChopstick() => leftChopstick;
-        public Chopstick GetRightChopstick() => rightChopstick;
     }
 
     // Chopstick class to simulate lock behavior
@@ -100,19 +111,20 @@ public class Test : MonoBehaviour
     // Methods to control the philosopher actions in the Test class
     public IEnumerator PickupChopsticks(Philosopher philosopher)
     {
-        // Try to pick up the left chopstick
-        yield return StartCoroutine(philosopher.GetLeftChopstick().PickUp());
-
-        // Try to pick up the right chopstick
-        yield return StartCoroutine(philosopher.GetRightChopstick().PickUp());
+        for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
+        {
+            yield return StartCoroutine(chopsticks[philosopher.pickupChopsticks[i]].PickUp());
+           
+        }
+       
     }
 
     public IEnumerator DropChopsticks(Philosopher philosopher)
     {
-        // Drop the right chopstick
-        yield return StartCoroutine(philosopher.GetRightChopstick().Drop());
-
-        // Drop the left chopstick
-        yield return StartCoroutine(philosopher.GetLeftChopstick().Drop());
+       for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
+        {
+            yield return StartCoroutine(chopsticks[philosopher.dropChopsticks[i]].Drop());
+           
+        }
     }
 }

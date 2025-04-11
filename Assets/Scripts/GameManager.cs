@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     // Singleton instance
     public static GameManager Instance;
+    public string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
 
     public Dictionary<string, GameObject> objectCache = new Dictionary<string, GameObject>();
     public Dictionary<int, ChopstickData> chopstickData = new Dictionary<int, ChopstickData>();

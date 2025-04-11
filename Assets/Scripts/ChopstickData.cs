@@ -22,4 +22,22 @@ public class ChopstickData {
         availablePickupChopsticks.Remove(chopstickId);
         orderPickupChopsticks.Add(chopstickId);
     }
+
+    public void ConsumeAvailableDropChopstick(int chopstickId)
+    {
+        availableDropChopsticks.Remove(chopstickId);
+        orderDropChopsticks.Add(chopstickId);
+    }
+
+    public void ConsumeOrderPickupChopstick(int chopstickId)
+    {
+        orderPickupChopsticks.Remove(chopstickId);
+        availablePickupChopsticks.Add(chopstickId);
+    }
+
+    public void ConsumeOrderDropChopstick(int chopstickId)
+    {
+        orderDropChopsticks.Remove(chopstickId);
+        availableDropChopsticks.Add(chopstickId);
+    }
 }

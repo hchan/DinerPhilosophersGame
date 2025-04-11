@@ -77,6 +77,13 @@ public class PhilosopherUI : MonoBehaviour
             TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
             label.text = "chopstick" + chopstickId;
             buttonObj.transform.SetParent(availableChopsticksDropSelector.transform, false); // Use 'false' to keep local position
+            buttonObj.onClick.RemoveAllListeners(); // Remove all listeners before adding a new one
+            buttonObj.onClick.AddListener(() =>
+            {
+                gameManager.chopstickData[philosopherId].ConsumeAvailableDropChopstick(chopstickId);
+                ResetChopsticksUI();
+            }
+            );
         }
 
         for (int i = 0; i < gameManager.chopstickData[philosopherId].orderPickupChopsticks.Count; i++)
@@ -86,6 +93,13 @@ public class PhilosopherUI : MonoBehaviour
             TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
             label.text = "chopstick" + chopstickId;
             buttonObj.transform.SetParent(orderChopsticksPickupSelector.transform, false); // Use 'false' to keep local position
+            buttonObj.onClick.RemoveAllListeners(); // Remove all listeners before adding a new one
+            buttonObj.onClick.AddListener(() =>
+            {
+                gameManager.chopstickData[philosopherId].ConsumeOrderPickupChopstick(chopstickId);
+                ResetChopsticksUI();
+            }
+            );
         }
         for (int i = 0; i < gameManager.chopstickData[philosopherId].orderDropChopsticks.Count; i++)
         {
@@ -94,6 +108,13 @@ public class PhilosopherUI : MonoBehaviour
             TMP_Text label = buttonObj.GetComponentInChildren<TMP_Text>();
             label.text = "chopstick" + chopstickId;
             buttonObj.transform.SetParent(orderChopsticksDropSelector.transform, false); // Use 'false' to keep local position
+            buttonObj.onClick.RemoveAllListeners(); // Remove all listeners before adding a new one
+            buttonObj.onClick.AddListener(() =>
+            {
+                gameManager.chopstickData[philosopherId].ConsumeOrderDropChopstick(chopstickId);
+                ResetChopsticksUI();
+            }
+            );
         }
     }
 

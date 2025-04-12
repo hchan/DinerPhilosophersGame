@@ -12,7 +12,7 @@ public class AutoScrollToBottom : MonoBehaviour
         if (runButton.interactable == false)
         {
             // Scroll to the bottom of the scrollRect
-            scrollRect.verticalNormalizedPosition = 0f;
+            //scrollRect.verticalNormalizedPosition = 0f;
         }
     }
 }

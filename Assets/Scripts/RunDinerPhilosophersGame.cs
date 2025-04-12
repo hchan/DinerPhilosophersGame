@@ -82,9 +82,9 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
         runButton.interactable = true; // Re-enable the button      
 
-        ScrollRect scrollRect = GameManager.Instance.Get("console").GetComponent<ScrollRect>();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
-        scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom of the console
+        //ScrollRect scrollRect = GameManager.Instance.Get("console").GetComponent<ScrollRect>();
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
+        //scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom of the console
     }
 
     // Check if all philosopher coroutines have completed

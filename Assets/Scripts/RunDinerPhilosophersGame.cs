@@ -40,7 +40,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // Initialize philosophers with left and right chopsticks and pass the MonoBehaviour reference
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
-            /*
+            
             int left = i;
             int right = (i + 1) % NUM_PHILOSOPHERS;
             int lower = Mathf.Min(left, right); // partial ordering
@@ -54,9 +54,9 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             {
                 higher,
                 lower
-            };*/
-            List<int> pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
-            List<int> dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
+            };
+            //List<int> pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
+            //List<int> dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
 
             // Start the philosopher's coroutine and add it to the list

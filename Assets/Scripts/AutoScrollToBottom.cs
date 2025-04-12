@@ -5,9 +5,14 @@ using System.Collections;
 public class AutoScrollToBottom : MonoBehaviour
 {
     public ScrollRect scrollRect;
+    public Button runButton; // Reference to the Run button
 
     void LateUpdate()
     {
-        scrollRect.verticalNormalizedPosition = 0f;
+        if (runButton.interactable == false)
+        {
+            // Scroll to the bottom of the scrollRect
+            scrollRect.verticalNormalizedPosition = 0f;
+        }
     }
 }

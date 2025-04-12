@@ -25,12 +25,6 @@ public class PhilosopherUI : MonoBehaviour
 
     void OnMouseDown()
     {
-        OnMouseEnter();
-    }
-
-
-    void OnMouseEnter()
-    {
         // Set the cursor to the hoverCursor
         Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
         gameManager.selectedPhilosopherId = philosopherId;
@@ -39,6 +33,12 @@ public class PhilosopherUI : MonoBehaviour
             gameManager.philosopherNames[philosopherId];
         ResetChopsticksUI();
         SetAlpha(gameManager.fullAlpha);
+    }
+
+
+    void OnMouseEnter()
+    {
+        gameManager.SetAlpha(gameObject, gameManager.highlightAlpha);
     }
 
     void ResetChopsticksUI()

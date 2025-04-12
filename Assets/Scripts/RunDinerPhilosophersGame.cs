@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
+
+    public TMP_InputField consoleInputField; // Reference to the console text UI element
 
     // Start is called before the first frame update
     public void BeginSimulation()
@@ -44,12 +46,12 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     public class Philosopher
     {
         private readonly int id;
-       
+
 
         public List<int> pickupChopsticks = new List<int>();
         public List<int> dropChopsticks = new List<int>();
         private readonly string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
-        private readonly RunDinerPhilosophersGame runDinerPhilosophersGame; 
+        private readonly RunDinerPhilosophersGame runDinerPhilosophersGame;
 
         // Pass MonoBehaviour reference (Test) to be able to call StartCoroutine()
         public Philosopher(int id, List<int> pickupChopsticks, List<int> dropChopsticks, RunDinerPhilosophersGame runDinerPhilosophersGame)
@@ -57,30 +59,39 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             this.id = id;
             this.pickupChopsticks = pickupChopsticks;
             this.dropChopsticks = dropChopsticks;
-            this.runDinerPhilosophersGame = runDinerPhilosophersGame; 
+            this.runDinerPhilosophersGame = runDinerPhilosophersGame;
         }
+
+        public void Log(string message)
+        {
+            // Append the message to the console text
+            runDinerPhilosophersGame.consoleInputField.text += message + "\n";
+            Debug.Log(message); // Also log to the console for debugging
+        }
+
 
         public IEnumerator Run()
         {
             while (true)
             {
-                
+
 
                 // Philosopher is hungry and trying to pick up chopsticks
-                Debug.Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
+                Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
                 yield return runDinerPhilosophersGame.PickupChopsticks(this);
 
                 // Philosopher is eating
-                Debug.Log($"{philosopherNames[id]} is eating!");
+                Log($"{philosopherNames[id]} is eating!");
                 yield return new WaitForSeconds(Random.Range(0.001f, 0.1f));
 
                 // Drop chopsticks
                 yield return runDinerPhilosophersGame.DropChopsticks(this);
-                Debug.Log($"{philosopherNames[id]} finished eating and is thinking again.");
+                Log($"{philosopherNames[id]} finished eating and is thinking again.");
             }
         }
 
     }
+
 
     // Chopstick class to simulate lock behavior
     public class Chopstick
@@ -115,17 +126,17 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
         {
             yield return StartCoroutine(chopsticks[philosopher.pickupChopsticks[i]].PickUp());
-           
+
         }
-       
+
     }
 
     public IEnumerator DropChopsticks(Philosopher philosopher)
     {
-       for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
+        for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
         {
             yield return StartCoroutine(chopsticks[philosopher.dropChopsticks[i]].Drop());
-           
+
         }
     }
 }

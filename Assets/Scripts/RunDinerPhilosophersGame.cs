@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
     private const int SIMULATION_TIME = 1; // seconds
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
+
 
     // Making a scrollable textArea in Unity is nowhere as straight forward
     // as JS/HTML. See:
@@ -22,11 +24,13 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         consoleInputField.text += message + "\n";
         Debug.Log(message); // Also log to the console for debugging
     }
+
     // This method is called to start the simulation (from the Run button)
     public void BeginSimulation()
     {
         Debug.Log("Starting Diner Philosophers Game");
         runButton.interactable = false; // Disable the button to prevent multiple clicks
+
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
@@ -51,8 +55,11 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 lower
             };
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
+            
+            // Start the philosopher's coroutine and add it to the list
             StartCoroutine(philosophers[i].Run());
         }
+
         StartCoroutine(StopSimulationAfterSeconds(this, SIMULATION_TIME));
     }
 
@@ -63,7 +70,22 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         {
             philosophers[i].Stop(); // Tell each philosopher to stop
         }
+
+        // Wait until all philosopher coroutines have finished
+        yield return new WaitUntil(() => IsSimulationComplete());
+
         runDinerPhilosophersGame.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
+        runButton.interactable = true; // Re-enable the button
+    }
+
+    // Check if all philosopher coroutines have completed
+    private bool IsSimulationComplete()
+    {
+        foreach (Philosopher philosopher in philosophers)
+        {
+            if (!philosopher.IsDone) return false; // If any philosopher is still running, the simulation is not complete
+        }
+        return true;
     }
 
     // Philosopher class
@@ -77,6 +99,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         private readonly string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
         private readonly RunDinerPhilosophersGame runDinerPhilosophersGame;
         private bool keepRunning = true;
+        private bool isDone = false;
 
         // Pass MonoBehaviour reference (Test) to be able to call StartCoroutine()
         public Philosopher(int id, List<int> pickupChopsticks, List<int> dropChopsticks, RunDinerPhilosophersGame runDinerPhilosophersGame)
@@ -87,12 +110,12 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             this.runDinerPhilosophersGame = runDinerPhilosophersGame;
         }
 
-
-
         public void Stop()
         {
             keepRunning = false;
         }
+
+        public bool IsDone => isDone; // Property to check if the philosopher is done
 
         public IEnumerator Run()
         {
@@ -100,27 +123,29 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             {
                 // Philosopher is thinking
                 runDinerPhilosophersGame.Log($"{philosopherNames[id]} is thinking.");
-                // Simulate thinking time ... the philosopher thinks
-                // twice as long as s/he eats
                 yield return new WaitForSeconds(Random.Range(0.002f, 0.2f));
+
                 // Philosopher is hungry and trying to pick up chopsticks
                 runDinerPhilosophersGame.Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
                 yield return runDinerPhilosophersGame.PickupChopsticks(this);
+
                 // Philosopher is eating
                 runDinerPhilosophersGame.Log($"{philosopherNames[id]} is eating!");
                 yield return new WaitForSeconds(Random.Range(0.001f, 0.1f));
+
                 // Drop chopsticks
                 yield return runDinerPhilosophersGame.DropChopsticks(this);
                 runDinerPhilosophersGame.Log($"{philosopherNames[id]} finished eating and is thinking again.");
             }
+            isDone = true; // Mark the philosopher as done when the loop finishes
         }
     }
-
 
     // Chopstick class to simulate lock behavior
     public class Chopstick
     {
         private bool isHeld = false;
+        
         // Try to pick up the chopstick (atomic-like behavior)
         public IEnumerator PickUp()
         {
@@ -150,7 +175,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
         {
             yield return StartCoroutine(chopsticks[philosopher.pickupChopsticks[i]].PickUp());
-
         }
     }
 

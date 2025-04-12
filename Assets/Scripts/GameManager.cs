@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
 
     private void CacheAllObjects()
     {
-        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+        GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
         foreach (GameObject obj in allObjects)
         {
             if (!objectCache.ContainsKey(obj.name))

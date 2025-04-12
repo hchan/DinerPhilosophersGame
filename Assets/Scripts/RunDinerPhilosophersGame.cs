@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
-    private const int SIMULATION_TIME = 1; // seconds
+    private const int SIMULATION_TIME = 5; // seconds
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
@@ -55,6 +55,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 higher,
                 lower
             };
+            
             //List<int> pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
             //List<int> dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
@@ -76,9 +77,14 @@ public class RunDinerPhilosophersGame : MonoBehaviour
 
         // Wait until all philosopher coroutines have finished
         yield return new WaitUntil(() => IsSimulationComplete());
-
+        runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
         runDinerPhilosophersGame.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
+        runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
         runButton.interactable = true; // Re-enable the button      
+
+        ScrollRect scrollRect = GameManager.Instance.Get("console").GetComponent<ScrollRect>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
+        scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom of the console
     }
 
     // Check if all philosopher coroutines have completed
@@ -101,7 +107,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         public List<int> dropChopsticks = new List<int>();
         private readonly string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
         private readonly RunDinerPhilosophersGame runDinerPhilosophersGame;
-        private bool keepRunning = true;
+        public bool keepRunning = true;
         private bool isDone = false;
 
         // Pass MonoBehaviour reference (Test) to be able to call StartCoroutine()
@@ -177,7 +183,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // and this list will have 0, 1, or 2 chopstickIds in it
         int leftChopstickId = GameManager.Instance.GetLeftChopstickId(philosopher.id);
         int rightChopstickId = GameManager.Instance.GetRightChopstickId(philosopher.id);
-        while (!chopsticks[leftChopstickId].isHeld && !chopsticks[rightChopstickId].isHeld)
+        while (philosopher.keepRunning && !chopsticks[leftChopstickId].isHeld && !chopsticks[rightChopstickId].isHeld)
         {
             for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
             {

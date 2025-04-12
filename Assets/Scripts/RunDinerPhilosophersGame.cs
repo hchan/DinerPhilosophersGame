@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
+    private const int SIMULATION_TIME = 5; // seconds
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
@@ -12,11 +14,13 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     // as JS/HTML. See:
     // https://www.youtube.com/watch?v=-4nkI9XnAU0
     public TMP_InputField consoleInputField; // Reference to the console text UI element
+    public Button runButton; // Reference to the Run button
 
     // This method is called to start the simulation (from the Run button)
     public void BeginSimulation()
     {
         Debug.Log("Starting Diner Philosophers Game");
+        runButton.interactable = false; // Disable the button to prevent multiple clicks
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
@@ -43,7 +47,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
             StartCoroutine(philosophers[i].Run());
         }
-        StartCoroutine(StopSimulationAfterSeconds(5f)); // Run for 5 seconds
+        StartCoroutine(StopSimulationAfterSeconds(SIMULATION_TIME));
     }
 
     private IEnumerator StopSimulationAfterSeconds(float seconds)
@@ -53,7 +57,9 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         {
             philosophers[i].Stop(); // Tell each philosopher to stop
         }
-        Debug.Log("Simulation ended after 5 seconds.");
+        Debug.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
+        runButton.interactable = true; // Re-enable the button
+        consoleInputField.text += $"Simulation ended after {SIMULATION_TIME} seconds.\n"; // Append to the console text
     }
 
     // Philosopher class

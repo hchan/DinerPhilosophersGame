@@ -106,10 +106,6 @@ public class GameManager : MonoBehaviour
         {
             SetRendererAlpha(renderer, alpha);
         }
-        else
-        {
-            Debug.LogWarning("No TextMeshPro or Renderer component found.");
-        }
     }
 
     private void SetTextAlpha(MaskableGraphic textComponent, float alpha)

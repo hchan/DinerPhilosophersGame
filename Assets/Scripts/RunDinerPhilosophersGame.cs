@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
-    private const int SIMULATION_TIME = 5; // seconds
+    private const int SIMULATION_TIME = 1; // seconds
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
@@ -16,6 +16,12 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     public TMP_InputField consoleInputField; // Reference to the console text UI element
     public Button runButton; // Reference to the Run button
 
+    public void Log(string message)
+    {
+        // Append the message to the console text
+        consoleInputField.text += message + "\n";
+        Debug.Log(message); // Also log to the console for debugging
+    }
     // This method is called to start the simulation (from the Run button)
     public void BeginSimulation()
     {
@@ -47,19 +53,17 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
             StartCoroutine(philosophers[i].Run());
         }
-        StartCoroutine(StopSimulationAfterSeconds(SIMULATION_TIME));
+        StartCoroutine(StopSimulationAfterSeconds(this, SIMULATION_TIME));
     }
 
-    private IEnumerator StopSimulationAfterSeconds(float seconds)
+    private IEnumerator StopSimulationAfterSeconds(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
             philosophers[i].Stop(); // Tell each philosopher to stop
         }
-        Debug.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
-        runButton.interactable = true; // Re-enable the button
-        consoleInputField.text += $"Simulation ended after {SIMULATION_TIME} seconds.\n"; // Append to the console text
+        runDinerPhilosophersGame.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
     }
 
     // Philosopher class
@@ -83,12 +87,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             this.runDinerPhilosophersGame = runDinerPhilosophersGame;
         }
 
-        public void Log(string message)
-        {
-            // Append the message to the console text
-            runDinerPhilosophersGame.consoleInputField.text += message + "\n";
-            Debug.Log(message); // Also log to the console for debugging
-        }
+
 
         public void Stop()
         {
@@ -100,19 +99,19 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             while (keepRunning)
             {
                 // Philosopher is thinking
-                Log($"{philosopherNames[id]} is thinking.");
+                runDinerPhilosophersGame.Log($"{philosopherNames[id]} is thinking.");
                 // Simulate thinking time ... the philosopher thinks
                 // twice as long as s/he eats
                 yield return new WaitForSeconds(Random.Range(0.002f, 0.2f));
                 // Philosopher is hungry and trying to pick up chopsticks
-                Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
+                runDinerPhilosophersGame.Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
                 yield return runDinerPhilosophersGame.PickupChopsticks(this);
                 // Philosopher is eating
-                Log($"{philosopherNames[id]} is eating!");
+                runDinerPhilosophersGame.Log($"{philosopherNames[id]} is eating!");
                 yield return new WaitForSeconds(Random.Range(0.001f, 0.1f));
                 // Drop chopsticks
                 yield return runDinerPhilosophersGame.DropChopsticks(this);
-                Log($"{philosopherNames[id]} finished eating and is thinking again.");
+                runDinerPhilosophersGame.Log($"{philosopherNames[id]} finished eating and is thinking again.");
             }
         }
     }

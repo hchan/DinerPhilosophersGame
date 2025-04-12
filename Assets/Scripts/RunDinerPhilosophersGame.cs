@@ -8,6 +8,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
+    // for the scrollView, see
+    // https://www.youtube.com/watch?v=-4nkI9XnAU0
     public TMP_InputField consoleInputField; // Reference to the console text UI element
 
     // Start is called before the first frame update

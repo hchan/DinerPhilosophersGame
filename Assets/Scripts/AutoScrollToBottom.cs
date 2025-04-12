@@ -9,11 +9,14 @@ public class AutoScrollToBottom : MonoBehaviour
 
     void LateUpdate()
     {
+        /*
         if (runButton.interactable == false)
         {
             // Scroll to the bottom of the scrollRect
             LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
             scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom of the console
         }
+        */
     }
 }
+

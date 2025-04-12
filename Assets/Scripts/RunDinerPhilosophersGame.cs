@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
     // Start is called before the first frame update
-    void StartSKIP()
+    public void BeginSimulation()
     {
+        Debug.Log("Starting Diner Philosophers Game");
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
@@ -48,15 +49,15 @@ public class Test : MonoBehaviour
         public List<int> pickupChopsticks = new List<int>();
         public List<int> dropChopsticks = new List<int>();
         private readonly string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
-        private readonly Test test;  // Reference to Test class to call StartCoroutine
+        private readonly RunDinerPhilosophersGame runDinerPhilosophersGame; 
 
         // Pass MonoBehaviour reference (Test) to be able to call StartCoroutine()
-        public Philosopher(int id, List<int> pickupChopsticks, List<int> dropChopsticks, Test test)
+        public Philosopher(int id, List<int> pickupChopsticks, List<int> dropChopsticks, RunDinerPhilosophersGame runDinerPhilosophersGame)
         {
             this.id = id;
             this.pickupChopsticks = pickupChopsticks;
             this.dropChopsticks = dropChopsticks;
-            this.test = test;  // Store the reference to the 'Test' class
+            this.runDinerPhilosophersGame = runDinerPhilosophersGame; 
         }
 
         public IEnumerator Run()
@@ -67,14 +68,14 @@ public class Test : MonoBehaviour
 
                 // Philosopher is hungry and trying to pick up chopsticks
                 Debug.Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
-                yield return test.PickupChopsticks(this);
+                yield return runDinerPhilosophersGame.PickupChopsticks(this);
 
                 // Philosopher is eating
                 Debug.Log($"{philosopherNames[id]} is eating!");
                 yield return new WaitForSeconds(Random.Range(0.001f, 0.1f));
 
                 // Drop chopsticks
-                yield return test.DropChopsticks(this);
+                yield return runDinerPhilosophersGame.DropChopsticks(this);
                 Debug.Log($"{philosopherNames[id]} finished eating and is thinking again.");
             }
         }

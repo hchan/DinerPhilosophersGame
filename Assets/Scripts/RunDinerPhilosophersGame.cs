@@ -45,8 +45,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         {
             List<int> pickupChopsticks, dropChopsticks;
             //PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
-            //AssignPickupAndDropChopsticksListsFromUserInput(i, out pickupChopsticks, out dropChopsticks);
-            AssignPickupAndDropChopsticksListsFromLocalTesting(i, out pickupChopsticks, out dropChopsticks);
+            AssignPickupAndDropChopsticksListsFromUserInput(i, out pickupChopsticks, out dropChopsticks);
+            //AssignPickupAndDropChopsticksListsFromLocalTesting(i, out pickupChopsticks, out dropChopsticks);
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
 
             // Start the philosopher's coroutine and add it to the list

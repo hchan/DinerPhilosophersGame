@@ -44,15 +44,15 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
             List<int> pickupChopsticks, dropChopsticks;
-            PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
+            //PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
             //AssignPickupAndDropChopsticksListsFromUserInput(i, out pickupChopsticks, out dropChopsticks);
-            //AssignPickupAndDropChopsticksListsFromLocalTesting(i, out pickupChopsticks, out dropChopsticks);
+            AssignPickupAndDropChopsticksListsFromLocalTesting(i, out pickupChopsticks, out dropChopsticks);
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
 
             // Start the philosopher's coroutine and add it to the list
             StartCoroutine(philosophers[i].Run());
         }
-
+        StartCoroutine(DetectDeadlock(this, SIMULATION_TIME));
         StartCoroutine(StopSimulationAfterSeconds(this, SIMULATION_TIME));
     }
 
@@ -117,6 +117,34 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             };
     }
 
+    private IEnumerator DetectDeadlock(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
+    {
+        while (IsSimulationComplete() == false)
+        {
+            // get all the heldPhilsopherIds in a Set
+            // this is a set of the philosophers that are holding chopsticks
+            // if the size of the set is equal to the number of philosophers
+            // then there is a deadlock
+            HashSet<int> heldPhilosopherIds = new HashSet<int>();
+            for (int i = 0; i < NUM_PHILOSOPHERS; i++)
+            {
+                if (chopsticks[i].isHeldByPhilosopherId != -1)
+                {
+                    heldPhilosopherIds.Add(chopsticks[i].isHeldByPhilosopherId);
+                }
+            }
+            if (heldPhilosopherIds.Count == NUM_PHILOSOPHERS)
+            {
+                runDinerPhilosophersGame.Log("Deadlock detected!  All philosophers are holding one chopstick");
+                for (int i = 0; i < NUM_PHILOSOPHERS; i++)
+                {
+                    runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[i]} is holding chopstick{i}");
+                }
+                break; // Exit the loop if deadlock is detected
+            }
+            yield return null;
+        }
+    }
 
     private IEnumerator StopSimulationAfterSeconds(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
     {

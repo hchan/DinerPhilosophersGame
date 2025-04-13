@@ -49,15 +49,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject Get(string name)
     {
-        GameObject res = objectCache.TryGetValue(name, out var obj) ? obj : null;
-        if (res == null)
+        if (!objectCache.TryGetValue(name, out var obj))
         {
-            // Cache may have failed on initial load because the objects where disabled
-            // via the tabPanel
             CacheAllObjects();
-            objectCache.TryGetValue(name, out res);
+            objectCache.TryGetValue(name, out obj);
         }
-        return res;
+        return obj;
     }
 
 

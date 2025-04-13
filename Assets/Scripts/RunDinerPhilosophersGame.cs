@@ -228,22 +228,23 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     // Chopstick class to simulate lock behavior
     public class Chopstick
     {
-        public bool isHeld = false;
         public bool keepRunning = true;
 
+        // this can be used to simulate atomic-like behavior
+        // also is reentrant
         public int isHeldByPhilosopherId = -1; // -1 means no philosopher is holding the chopstick
+
 
         // Try to pick up the chopstick (atomic-like behavior)
         public IEnumerator PickUp(int philosopherId)
 
         {
             // Wait until the chopstick is available
-            while (isHeld && isHeldByPhilosopherId != philosopherId && keepRunning)
+            while (isHeldByPhilosopherId != -1 && isHeldByPhilosopherId != philosopherId && keepRunning)
             {
                 yield return null; // Wait for the next frame
             }
             // Mark the chopstick as picked up
-            isHeld = true;
             isHeldByPhilosopherId = philosopherId; // Set the philosopher ID who picked it up
         }
 
@@ -251,7 +252,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         public IEnumerator Drop()
         {
             // Simulate dropping the chopstick
-            isHeld = false;
             isHeldByPhilosopherId = -1; // Reset the philosopher ID
             yield return null; // Done dropping
         }

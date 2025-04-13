@@ -92,7 +92,13 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     // Philosopher 4: 4, 0
     // This way, no two philosophers will pick up the same
     // chopstick at the same time and there will be no deadlock.
-
+    // Note that using an even/odd ordering of the chopsticks works too
+    // exmple:
+    // if (i % 2 == 0)
+    // {
+    //   left = (i + 1) % NUM_PHILOSOPHERS;
+    //   right = i;
+    // }
     private static void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         int left = i;

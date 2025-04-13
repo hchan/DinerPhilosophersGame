@@ -72,6 +72,8 @@ public class TabManager : MonoBehaviour
                     tabPanels[i].gameObject.SetActive(false); // Hide all panels
                 }
                 diningTablePanel.gameObject.SetActive(true);
+                GameManager.Instance.CacheAllObjects(); // Cache all objects in the scene
+                GameManager.Instance.ResetAlpha(); // Reset the alpha of all objects in the scene
                 break;
 
             default:

@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         CacheAllObjects();
     }
 
-    private void CacheAllObjects()
+    public void CacheAllObjects()
     {
         GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
 
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Debug.Log("GameManager started");
-        ResetAlpha();
+        
 //        Get("pickupChopsticksText").SetActive(false);
  //       Get("availablePickupChopsticksDropdown").SetActive(false);
         for (int i = 0; i < numPhilosophers; i++)

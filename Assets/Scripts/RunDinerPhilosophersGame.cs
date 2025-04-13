@@ -31,9 +31,9 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     public void BeginSimulation()
     {
         Debug.Log("Starting Diner Philosophers Game");
-        runButton.interactable = false; // Disable the button to prevent multiple clicks
+        DisableUIButtons();
         string currentTime = System.DateTime.Now.ToString("F"); // Get current date and time in human-readable format
-        consoleInputField.text = "Running at " + currentTime + "\n"; // Change button text
+        consoleInputField.text = "Started simulation at " + currentTime + "\n"; // Change button text
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
@@ -56,7 +56,34 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         StartCoroutine(StopSimulationAfterSeconds(this, SIMULATION_TIME));
     }
 
-    private static void AssignPickupAndDropChopsticksListsFromLocalTesting(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    private void DisableUIButtons()
+    {
+        runButton.interactable = false; // Disable the button to prevent multiple clicks
+        foreach (string buttonName in GetChopstickButtonNamesInChopsticksHolder())
+        {
+            GameManager.Instance.Get(buttonName).GetComponent<Button>().interactable = false;
+        }
+    }
+
+    private void EnableUIButtons() {
+        runButton.interactable = true; // Re-enable the button      
+        foreach (string buttonName in GetChopstickButtonNamesInChopsticksHolder())
+        {
+            GameManager.Instance.Get(buttonName).GetComponent<Button>().interactable = true;
+        }
+    }
+
+    private string[] GetChopstickButtonNamesInChopsticksHolder()
+    {
+        return new string[] {
+            "availableChopstickPickup0", "availableChopstickPickup1",
+            "availableChopstickDrop0", "availableChopstickDrop1",
+            "orderChopstickPickup0", "orderChopstickPickup1",
+            "orderChopstickDrop0", "orderChopstickDrop1"
+        };
+    }
+
+    private void AssignPickupAndDropChopsticksListsFromLocalTesting(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         pickupChopsticks = new List<int>
             {
@@ -69,7 +96,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 i
             };
     }
-    private static void AssignPickupAndDropChopsticksListsFromUserInput(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    private void AssignPickupAndDropChopsticksListsFromUserInput(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
         dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
@@ -99,7 +126,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     //   left = (i + 1) % NUM_PHILOSOPHERS;
     //   right = i;
     // }
-    private static void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    private void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         int left = i;
         int right = (i + 1) % NUM_PHILOSOPHERS;
@@ -138,7 +165,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 runDinerPhilosophersGame.Log("Deadlock detected!  All philosophers are holding one chopstick");
                 for (int i = 0; i < NUM_PHILOSOPHERS; i++)
                 {
-                    runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[i]} is holding chopstick{i}");
+                    runDinerPhilosophersGame.Log($"Deadlock diagnostic: {PHILOSOPHER_NAMES[i]} is holding chopstick{i}");
                 }
                 break; // Exit the loop if deadlock is detected
             }
@@ -158,7 +185,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // Wait until all philosopher coroutines have finished
         yield return new WaitUntil(() => IsSimulationComplete());
         Summary(runDinerPhilosophersGame);
-        runButton.interactable = true; // Re-enable the button      
+        runDinerPhilosophersGame.EnableUIButtons();
 
         ScrollRect scrollRect = GameManager.Instance.Get("console").GetComponent<ScrollRect>();
         LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);

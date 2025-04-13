@@ -8,6 +8,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
     public const int SIMULATION_TIME = 5; // seconds
+    public static readonly string[] PHILOSOPHER_NAMES = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
+
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 
@@ -80,6 +82,11 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
         runDinerPhilosophersGame.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
         runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
+        runDinerPhilosophersGame.Log("Summary of stir fry eaten:");
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++)
+        {
+            runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[i]} ate {philosophers[i].stirFryEaten} bowls of stir fry.");
+        }
         runButton.interactable = true; // Re-enable the button      
 
         ScrollRect scrollRect = GameManager.Instance.Get("console").GetComponent<ScrollRect>();
@@ -105,9 +112,10 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // the order of the list IS important
         public List<int> pickupChopsticks = new List<int>();
         public List<int> dropChopsticks = new List<int>();
-        private readonly string[] philosopherNames = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
         private readonly RunDinerPhilosophersGame runDinerPhilosophersGame;
         public bool keepRunning = true;
+
+        public int stirFryEaten = 0; // Number of stir fry eaten - let's assume the unit is a bowl
         private bool isDone = false;
 
         // Pass MonoBehaviour reference (Test) to be able to call StartCoroutine()
@@ -131,20 +139,21 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             while (keepRunning)
             {
                 // Philosopher is thinking
-                runDinerPhilosophersGame.Log($"{philosopherNames[id]} is thinking.");
+                runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is thinking.");
                 yield return new WaitForSeconds(Random.Range(0.002f, 0.2f));
 
                 // Philosopher is hungry and trying to pick up chopsticks
-                runDinerPhilosophersGame.Log($"{philosopherNames[id]} is hungry and trying to pick up chopsticks.");
+                runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is hungry and trying to pick up chopsticks.");
                 yield return runDinerPhilosophersGame.PickupChopsticks(this);
 
                 // Philosopher is eating
-                runDinerPhilosophersGame.Log($"{philosopherNames[id]} is eating!");
+                runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is eating!");
+                stirFryEaten++;
                 yield return new WaitForSeconds(Random.Range(0.001f, 0.1f));
 
                 // Drop chopsticks
                 yield return runDinerPhilosophersGame.DropChopsticks(this);
-                runDinerPhilosophersGame.Log($"{philosopherNames[id]} finished eating and is thinking again.");
+                runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} finished eating and is thinking again.");
             }
             isDone = true; // Mark the philosopher as done when the loop finishes
         }

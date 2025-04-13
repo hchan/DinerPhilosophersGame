@@ -32,7 +32,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     {
         Debug.Log("Starting Diner Philosophers Game");
         runButton.interactable = false; // Disable the button to prevent multiple clicks
-
+        string currentTime = System.DateTime.Now.ToString("F"); // Get current date and time in human-readable format
+        consoleInputField.text = "Running at " + currentTime + "\n"; // Change button text
         // Create chopsticks
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
@@ -42,24 +43,10 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // Initialize philosophers with left and right chopsticks and pass the MonoBehaviour reference
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
-            
-            int left = i;
-            int right = (i + 1) % NUM_PHILOSOPHERS;
-            int lower = Mathf.Min(left, right); // partial ordering
-            int higher = Mathf.Max(left, right); // partial ordering
-            List<int> pickupChopsticks = new List<int>
-            {
-                lower,
-                higher
-            };
-            List<int> dropChopsticks = new List<int>
-            {
-                higher,
-                lower
-            };
-            
-            //List<int> pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
-            //List<int> dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
+            List<int> pickupChopsticks, dropChopsticks;
+            PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
+            //AssignPickupAndDropChopsticksListsFromUserInput(i, out pickupChopsticks, out dropChopsticks);
+            //AssignPickupAndDropChopsticksListsFromLocalTesting(i, out pickupChopsticks, out dropChopsticks);
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
 
             // Start the philosopher's coroutine and add it to the list
@@ -69,12 +56,69 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         StartCoroutine(StopSimulationAfterSeconds(this, SIMULATION_TIME));
     }
 
+    private static void AssignPickupAndDropChopsticksListsFromLocalTesting(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    {
+        pickupChopsticks = new List<int>
+            {
+                i,
+                (i + 1) % NUM_PHILOSOPHERS
+            };
+        dropChopsticks = new List<int>
+            {
+                (i + 1) % NUM_PHILOSOPHERS,
+                i
+            };
+    }
+    private static void AssignPickupAndDropChopsticksListsFromUserInput(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    {
+        pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
+        dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
+    }
+
+    // Partial ordering of chopsticks
+    // This is a solution to the deadlock problem
+    // in the Diner Philosopher's problem.
+    // The idea is to have a partial ordering of the chopsticks
+    // so that a philosopher will pick up the lower numbered
+    // chopstick first and then the higher numbered chopstick.
+    // This way, no two philosophers will pick up the same
+    // chopstick at the same time and there will be no deadlock.
+    // For example, if there are 5 philosophers and 5 chopsticks,
+    // the philosophers will pick up the chopsticks in the following order:
+    // Philosopher 0: 0, 1
+    // Philosopher 1: 1, 2
+    // Philosopher 2: 2, 3
+    // Philosopher 3: 3, 4
+    // Philosopher 4: 4, 0
+    // This way, no two philosophers will pick up the same
+    // chopstick at the same time and there will be no deadlock.
+
+    private static void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    {
+        int left = i;
+        int right = (i + 1) % NUM_PHILOSOPHERS;
+        int lower = Mathf.Min(left, right); // partial ordering
+        int higher = Mathf.Max(left, right); // partial ordering
+        pickupChopsticks = new List<int>
+            {
+                lower,
+                higher
+            };
+        dropChopsticks = new List<int>
+            {
+                higher,
+                lower
+            };
+    }
+
+
     private IEnumerator StopSimulationAfterSeconds(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
             philosophers[i].Stop(); // Tell each philosopher to stop
+            chopsticks[i].Stop(); // Release the chopstick
         }
 
         // Wait until all philosopher coroutines have finished
@@ -160,20 +204,22 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             {
                 // Philosopher is thinking
                 runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is thinking.");
-                yield return new WaitForSeconds(Random.Range(0.002f, 0.2f));
+                yield return new WaitForSeconds(Random.Range(0f, 0.0001f));
 
                 // Philosopher is hungry and trying to pick up chopsticks
                 runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is hungry and trying to pick up chopsticks.");
                 yield return runDinerPhilosophersGame.PickupChopsticks(this);
+                if (!keepRunning) break; // Check if the philosopher is still running
 
                 // Philosopher is eating
                 runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is eating!");
                 stirFryEaten++;
-                yield return new WaitForSeconds(Random.Range(0.001f, 0.1f));
+                yield return new WaitForSeconds(Random.Range(0f, 0.0001f));
 
                 // Drop chopsticks
                 yield return runDinerPhilosophersGame.DropChopsticks(this);
-                runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} finished eating and is thinking again.");
+                runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} has dropped his/her chopsticks.");
+
             }
             isDone = true; // Mark the philosopher as done when the loop finishes
         }
@@ -183,17 +229,22 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     public class Chopstick
     {
         public bool isHeld = false;
+        public bool keepRunning = true;
+
+        public int isHeldByPhilosopherId = -1; // -1 means no philosopher is holding the chopstick
 
         // Try to pick up the chopstick (atomic-like behavior)
-        public IEnumerator PickUp()
+        public IEnumerator PickUp(int philosopherId)
+
         {
             // Wait until the chopstick is available
-            while (isHeld)
+            while (isHeld && isHeldByPhilosopherId != philosopherId && keepRunning)
             {
                 yield return null; // Wait for the next frame
             }
             // Mark the chopstick as picked up
             isHeld = true;
+            isHeldByPhilosopherId = philosopherId; // Set the philosopher ID who picked it up
         }
 
         // Drop the chopstick
@@ -201,22 +252,33 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         {
             // Simulate dropping the chopstick
             isHeld = false;
+            isHeldByPhilosopherId = -1; // Reset the philosopher ID
             yield return null; // Done dropping
+        }
+
+        public void Stop()
+        {
+            keepRunning = false;
         }
     }
 
     public IEnumerator PickupChopsticks(Philosopher philosopher)
     {
-        // Loop through each chopstick in the pickupChopsticks list
-        // note that this list is ordered containing the chopstickIds
-        // and this list will have 0, 1, or 2 chopstickIds in it
-        int leftChopstickId = GameManager.Instance.GetLeftChopstickId(philosopher.id);
-        int rightChopstickId = GameManager.Instance.GetRightChopstickId(philosopher.id);
-        while (philosopher.keepRunning && !chopsticks[leftChopstickId].isHeld && !chopsticks[rightChopstickId].isHeld)
+
+        if (philosopher.pickupChopsticks.Count < 2)
         {
-            for (int i = 0; i < philosopher.pickupChopsticks.Count; i++)
+            Log($"Hint: Philosopher {PHILOSOPHER_NAMES[philosopher.id]} has {philosopher.pickupChopsticks.Count} chopstick(s) to pick up.");
+            Log("In order to eat, a philosopher needs to pick up 2 chopsticks.");
+        }
+        //while (philosopher.keepRunning && (!chopsticks[leftChopstickId].isHeld || !chopsticks[rightChopstickId].isHeld))
+        //{
+        int lockCount = 0; // you need 2 chopsticks to eat
+        while (lockCount != 2 && philosopher.keepRunning)
+        {
+            for (int i = 0; i < philosopher.pickupChopsticks.Count && philosopher.keepRunning; i++)
             {
-                yield return StartCoroutine(chopsticks[philosopher.pickupChopsticks[i]].PickUp());
+                yield return StartCoroutine(chopsticks[philosopher.pickupChopsticks[i]].PickUp(philosopher.id));
+                lockCount++;
             }
             yield return null; // Wait for the next frame
         }
@@ -227,9 +289,9 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // Loop through each chopstick in the dropChopsticks list
         // note that this list is ordered containing the chopstickIds
         // and this list will have 0, 1, or 2 chopstickIds in it
-        for (int i = 0; i < philosopher.dropChopsticks.Count; i++)
+        for (int i = 0; i < philosopher.dropChopsticks.Count && philosopher.keepRunning; i++)
         {
             yield return StartCoroutine(chopsticks[philosopher.dropChopsticks[i]].Drop());
-        }        
+        }
     }
 }

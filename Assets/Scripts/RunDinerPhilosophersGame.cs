@@ -240,6 +240,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
 
         {
             // Wait until the chopstick is available
+            // the isHeldByPhilosopherId != philosopherId implies reentrant
             while (isHeldByPhilosopherId != -1 && isHeldByPhilosopherId != philosopherId && keepRunning)
             {
                 yield return null; // Wait for the next frame

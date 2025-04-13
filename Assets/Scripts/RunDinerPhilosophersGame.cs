@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
-    private const int SIMULATION_TIME = 5; // seconds
+    public const int SIMULATION_TIME = 5; // seconds
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
 

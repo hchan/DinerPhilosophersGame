@@ -79,14 +79,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
 
         // Wait until all philosopher coroutines have finished
         yield return new WaitUntil(() => IsSimulationComplete());
-        runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
-        runDinerPhilosophersGame.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
-        runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
-        runDinerPhilosophersGame.Log("Summary of stir fry eaten:");
-        for (int i = 0; i < NUM_PHILOSOPHERS; i++)
-        {
-            runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[i]} ate {philosophers[i].stirFryEaten} bowls of stir fry.");
-        }
+        Summary(runDinerPhilosophersGame);
         runButton.interactable = true; // Re-enable the button      
 
         ScrollRect scrollRect = GameManager.Instance.Get("console").GetComponent<ScrollRect>();
@@ -94,7 +87,34 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom of the console
     }
 
+    private void Summary(RunDinerPhilosophersGame runDinerPhilosophersGame)
+    {
+
+        runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
+        runDinerPhilosophersGame.Log($"Simulation ended after {SIMULATION_TIME} seconds.");
+        runDinerPhilosophersGame.Log("--------------------------------------------------------------------");
+        runDinerPhilosophersGame.Log("Summary of stir fry eaten:");
+        bool allPhilsophersHaveEatenAtLeastTenBowls = true;
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++)
+        {
+            runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[i]} ate {philosophers[i].stirFryEaten} bowls of stir fry.");
+            if (philosophers[i].stirFryEaten < 10)
+            {
+                allPhilsophersHaveEatenAtLeastTenBowls = false;
+            }
+        }
+        if (allPhilsophersHaveEatenAtLeastTenBowls)
+        {
+            runDinerPhilosophersGame.Log("All philosophers have eaten at least 10 bowls of stir fry.  Simulation successful!  You win!");
+        }
+        else
+        {
+            runDinerPhilosophersGame.Log("Not all philosophers have eaten at least 10 bowls of stir fry.");
+        }
+    }
+
     // Check if all philosopher coroutines have completed
+
     private bool IsSimulationComplete()
     {
         foreach (Philosopher philosopher in philosophers)

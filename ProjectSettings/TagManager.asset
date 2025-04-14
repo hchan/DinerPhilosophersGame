@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - chopsticksHolder
+  - tabButton
+  - tabPanel
   layers:
   - Default
   - TransparentFX

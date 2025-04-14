@@ -5,80 +5,59 @@ using System.Collections.Generic;
 
 public class TabManager : MonoBehaviour
 {
-    public RectTransform instructionsPanel; // Assign your panel in the inspector
-    public RectTransform diningTablePanel; // Assign your panel in the inspector
-    public Button instructionsButton; // Assign your button in the inspector
-    public Button diningTableButton; // Assign your button in the inspector
 
-
-    public List<Button> tabButtons; // Assign your buttons in the inspector
-    public List<RectTransform> tabPanels; // Assign your panels in the inspector
 
     public Button continueButton; // Assign your button in the inspector
     public void ShowTab(int index)
     {
-      
+
     }
 
-     void Start()
+    void Start()
     {
-        if (instructionsButton != null)
+        for (int i = 0; i < GameManager.Instance.tabButtons.Count; i++)
         {
-            instructionsButton.onClick.AddListener(() => OnButtonClick(instructionsButton.name));  // Passing a label for the button
+            Button button = GameManager.Instance.tabButtons[i];
+            button.onClick.AddListener(() => OnButtonClick(button));  // Passing a label for the button
         }
-        if (diningTableButton != null)
-        {
-            diningTableButton.onClick.AddListener(() => OnButtonClick(diningTableButton.name));  // Passing a label for the button
-        }
-        if (continueButton != null)
-        {
-            continueButton.onClick.AddListener(() => OnButtonClick(continueButton.name));  // Passing a label for the button
-        }
-        tabButtons.Add(instructionsButton);
-        tabButtons.Add(diningTableButton);
+        continueButton.onClick.AddListener(() => ContinueButtonClick(continueButton)); // Assign the continue button click event
+    }
 
-        tabPanels.Add(instructionsPanel);
-        tabPanels.Add(diningTablePanel);
+    void ContinueButtonClick(Button continueButton)
+    {
+        Debug.Log("Continue Button clicked");
+        SetButtonsAlpha(0.5f); // Set all buttons to 50% alpha
+        HideAllPanels(); // Hide all panels
+        RectTransform panel = GameManager.Instance.Get("diningTablePanel").GetComponent<RectTransform>();
+        panel.gameObject.SetActive(true); // Show the dining table panel
+        SetButtonAlpha(continueButton, 1f); // Set the clicked button to 100% alpha 
     }
 
     // General method to handle button click
-    void OnButtonClick(string buttonName)
+    void OnButtonClick(Button button)
     {
+        string buttonName = button.name; // Get the name of the clicked button
         Debug.Log(buttonName + " Button clicked");
-        // Handle interactions based on the button name
-        switch (buttonName)
-        {
-            case "instructionsButton":
-                for (int i = 0; i < tabButtons.Count; i++)
-                {
-                    SetButtonAlpha(tabButtons[i], 0.5f); // Set all buttons to 50% alpha
-                }
-                SetButtonAlpha(instructionsButton, 1f); // Set the clicked button to 100% alpha
-                for (int i = 0; i < tabPanels.Count; i++)
-                {
-                    tabPanels[i].gameObject.SetActive(false); // Hide all panels
-                }
-                instructionsPanel.gameObject.SetActive(true); 
-                break;
-            case "diningTableButton":
-            case "continueButton":
-                for (int i = 0; i < tabButtons.Count; i++)
-                {
-                    SetButtonAlpha(tabButtons[i], 0.5f); // Set all buttons to 50% alpha
-                }
-                SetButtonAlpha(diningTableButton, 1f); // Set the clicked button to 100% alpha
-                for (int i = 0; i < tabPanels.Count; i++)
-                {
-                    tabPanels[i].gameObject.SetActive(false); // Hide all panels
-                }
-                diningTablePanel.gameObject.SetActive(true);
-                GameManager.Instance.CacheAllObjects(); // Cache all objects in the scene
-                GameManager.Instance.ResetAlpha(); // Reset the alpha of all objects in the scene
-                break;
+        SetButtonsAlpha(0.5f); // Set all buttons to 50% alpha
+        HideAllPanels(); // Hide all panels
+        RectTransform panel = GameManager.Instance.Get(buttonName.Replace("Button", "") + "Panel").GetComponent<RectTransform>();
+        panel.gameObject.SetActive(true); // Show the corresponding panel
+        SetButtonAlpha(button, 1f); // Set the clicked button to 100% alpha
+    }
 
-            default:
-                Debug.Log("Unknown button clicked: " + buttonName);
-                break;
+    void SetButtonsAlpha(float alpha)
+    {
+        foreach (Button button in GameManager.Instance.tabButtons)
+        {
+            SetButtonAlpha(button, alpha);
+        }
+    }
+
+    void HideAllPanels()
+    {
+        foreach (RectTransform panel in GameManager.Instance.tabPanels)
+        {
+            panel.gameObject.SetActive(false); // Hide all panels
         }
     }
 

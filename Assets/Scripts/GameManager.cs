@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     public int selectedPhilosopherId = -1; // -1 means no philosopher is selected
 
     public List<GameObject> chopsticksInChopsticksHolder = new List<GameObject>();
+
+    public List<Button> tabButtons = new List<Button>();
+    public List<RectTransform> tabPanels = new List<RectTransform>();
     
     // Ensure the instance is only set once
     private void Awake()
@@ -31,7 +34,8 @@ public class GameManager : MonoBehaviour
 
     public void CacheAllObjects()
     {
-        GameObject[] allObjects = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        GameObject[] allObjects = Object.FindObjectsByType<GameObject>( 
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
 
         foreach (GameObject obj in allObjects)
         {
@@ -39,12 +43,15 @@ public class GameManager : MonoBehaviour
             {
                 objectCache[obj.name] = obj;
             }
+            if (obj.tag == "chopsticksHolder") {
+                chopsticksInChopsticksHolder.Add(obj);
+            } else if (obj.tag == "tabButton") {
+                tabButtons.Add(obj.GetComponent<Button>());
+            } else if (obj.tag == "tabPanel") {
+                tabPanels.Add(obj.GetComponent<RectTransform>());
+            }
         }
-        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("chopsticksHolder");
-        foreach (GameObject obj in objectsWithTag)
-        {
-            chopsticksInChopsticksHolder.Add(obj);
-        }
+        
     }
 
     public GameObject Get(string name)

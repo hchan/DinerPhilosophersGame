@@ -18,9 +18,26 @@ public class TabManager : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.tabButtons.Count; i++)
         {
             Button button = GameManager.Instance.tabButtons[i];
+            string buttonName = button.name; // Get the name of the button
+            if (buttonName == "instructionsButton") {
+                SetButtonAlpha(button, 1f); // Set all buttons to 50% alpha
+            } else {
+                SetButtonAlpha(button, 0.5f); // Set all buttons to 50% alpha
+            }
             button.onClick.AddListener(() => OnButtonClick(button));  // Passing a label for the button
         }
-        continueButton.onClick.AddListener(() => ContinueButtonClick(continueButton)); // Assign the continue button click event
+        for (int i = 0; i < GameManager.Instance.tabPanels.Count; i++) {
+            string panelName = GameManager.Instance.tabPanels[i].name;
+            if (panelName == "instructionsPanel") {
+                GameManager.Instance.tabPanels[i].gameObject.SetActive(true); // Show the first panel by default
+            } else {
+                GameManager.Instance.tabPanels[i].gameObject.SetActive(false); // Hide all other panels
+            }
+        }
+        if (continueButton != null)
+        {
+            continueButton.onClick.AddListener(() => ContinueButtonClick(continueButton)); // Assign the continue button click event
+        }
     }
 
     void ContinueButtonClick(Button continueButton)
@@ -30,7 +47,7 @@ public class TabManager : MonoBehaviour
         HideAllPanels(); // Hide all panels
         RectTransform panel = GameManager.Instance.Get("diningTablePanel").GetComponent<RectTransform>();
         panel.gameObject.SetActive(true); // Show the dining table panel
-        SetButtonAlpha(continueButton, 1f); // Set the clicked button to 100% alpha 
+        SetButtonAlpha(GameManager.Instance.Get("diningTableButton").GetComponent<Button>(), 1f); // Set the clicked button to 100% alpha 
     }
 
     // General method to handle button click

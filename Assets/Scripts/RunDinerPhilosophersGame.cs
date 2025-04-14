@@ -11,7 +11,7 @@ using System;
  */
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
-    private const int NUM_PHILOSOPHERS = 5;
+    public const int NUM_PHILOSOPHERS = 5;
     public const int SIMULATION_TIME = 5; // seconds
     public static readonly string[] PHILOSOPHER_NAMES = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
 
@@ -110,7 +110,10 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     // This method is used to assign the pickup and drop chopsticks lists from the UI
     private List<int>[] AssignPickupAndDropChopsticksListsFromUserInput(int philosopherId)
     {
-        return new List<int>[] { GameManager.Instance.chopstickData[philosopherId].orderPickupChopsticks, GameManager.Instance.chopstickData[philosopherId].orderDropChopsticks };
+        return new List<int>[] { 
+            GameManager.Instance.chopstickData[philosopherId].orderPickupChopsticks, 
+            GameManager.Instance.chopstickData[philosopherId].orderDropChopsticks
+        };
     }
 
     /** 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 /**
  * This script simulates the Diner Philosophers problem using Unity.
  * It creates a number of philosophers and chopsticks, and allows the philosophers to pick up and drop chopsticks while eating.
@@ -32,7 +33,23 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     }
 
     // This method is called to start the simulation (from the Run button)
+
+
     public void BeginSimulation()
+    {
+        BeginSimulationHelper(i => AssignPickupAndDropChopsticksListsFromUserInput(i));
+    }
+    public void BeginSimulationGlobalOrderSolution()
+    {
+        BeginSimulationHelper(i => GlobalOrderSolution(i));
+    }
+
+    public void BeginSimulationPartialOrderSolution()
+    {
+        BeginSimulationHelper(i => PartialOrderSolution(i));
+    }
+
+    private void BeginSimulationHelper(Func<int, List<int>[]> pickupAndDropStrategy)
     {
         Debug.Log("Starting Diner Philosophers Game");
         DisableUIButtons();
@@ -47,12 +64,10 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         // Initialize philosophers with left and right chopsticks and pass the MonoBehaviour reference
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
-            List<int> pickupChopsticks, dropChopsticks;
-            //GlobalOrderSoln(i, out pickupChopsticks, out dropChopsticks);
-            PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
 
-            AssignPickupAndDropChopsticksListsFromUserInput(i, out pickupChopsticks, out dropChopsticks);
-            philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
+            List<int>[] pickupAndDropLists = pickupAndDropStrategy(i);
+
+            philosophers[i] = new Philosopher(i, pickupAndDropLists[0], pickupAndDropLists[1], this);
 
             // Start the philosopher's coroutine and add it to the list
             StartCoroutine(philosophers[i].Run());
@@ -93,10 +108,9 @@ public class RunDinerPhilosophersGame : MonoBehaviour
 
 
     // This method is used to assign the pickup and drop chopsticks lists from the UI
-    private void AssignPickupAndDropChopsticksListsFromUserInput(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    private List<int>[] AssignPickupAndDropChopsticksListsFromUserInput(int philosopherId)
     {
-        pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
-        dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
+        return new List<int>[] { GameManager.Instance.chopstickData[philosopherId].orderPickupChopsticks, GameManager.Instance.chopstickData[philosopherId].orderDropChopsticks };
     }
 
     /** 
@@ -112,24 +126,25 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         Philosopher 3: picks chopsticks 3, then 4
         Philosopher 4: picks chopsticks 4, then 0
     */
-    private void GlobalOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    public List<int>[] GlobalOrderSolution(int philosopherId)
     {
-        int left = i;
-        int right = (i + 1) % NUM_PHILOSOPHERS;
+        int left = philosopherId;
+        int right = (philosopherId + 1) % NUM_PHILOSOPHERS;
         int lower = Mathf.Min(left, right); // partial ordering
         int higher = Mathf.Max(left, right); // partial ordering
-        pickupChopsticks = new List<int>
+        List<int> pickupChopsticks = new List<int>
             {
                 lower,
                 higher
             };
         // any order would work for dropping the chopsticks
         // but LIFO (Last In First Out) is the best practice
-        dropChopsticks = new List<int>
+        List<int> dropChopsticks = new List<int>
             {
                 higher,
                 lower
             };
+        return new List<int>[] { pickupChopsticks, dropChopsticks };
     }
 
     /** 
@@ -146,34 +161,36 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         Philosopher 3: picks chopsticks 3, then 4
         Philosopher 4: picks chopsticks 0, then 4
     */
-    private void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    public List<int>[] PartialOrderSolution(int philosopherId)
     {
         int first;
         int second;
-        if (i % 2 == 0) // odd
+        if (philosopherId % 2 == 0) // odd
         {
             // even philosopher
-            first = (i + 1) % NUM_PHILOSOPHERS;
-            second = i;
+            first = (philosopherId + 1) % NUM_PHILOSOPHERS;
+            second = philosopherId;
         }
         else
         {
             // odd philosopher
-            first = i;
-            second = (i + 1) % NUM_PHILOSOPHERS;
+            first = philosopherId;
+            second = (philosopherId + 1) % NUM_PHILOSOPHERS;
         }
-        pickupChopsticks = new List<int>
+        List<int> pickupChopsticks = new List<int>
             {
                 first,
                 second
             };
         // any order would work for dropping the chopsticks
         // but LIFO (Last In First Out) is the best practice
-        dropChopsticks = new List<int>
+        List<int> dropChopsticks = new List<int>
             {
                 second,
                 first
             };
+        return new List<int>[] { pickupChopsticks, dropChopsticks };
+
     }
 
 
@@ -299,7 +316,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             {
                 // Philosopher is thinking
                 runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is thinking.");
-                yield return new WaitForSeconds(Random.Range(0f, 0.0001f));
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0f, 0.0001f));
 
                 // Philosopher is hungry and trying to pick up chopsticks
                 runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is hungry and trying to pick up chopsticks.");
@@ -309,7 +326,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 // Philosopher is eating
                 runDinerPhilosophersGame.Log($"{PHILOSOPHER_NAMES[id]} is eating!");
                 stirFryEaten++;
-                yield return new WaitForSeconds(Random.Range(0f, 0.0001f));
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0f, 0.0001f));
 
                 // Drop chopsticks
                 yield return runDinerPhilosophersGame.DropChopsticks(this);

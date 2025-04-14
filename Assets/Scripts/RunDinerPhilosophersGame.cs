@@ -48,9 +48,10 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         for (int i = 0; i < NUM_PHILOSOPHERS; i++)
         {
             List<int> pickupChopsticks, dropChopsticks;
-            //PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
+            //GlobalOrderSoln(i, out pickupChopsticks, out dropChopsticks);
+            PartialOrderSoln(i, out pickupChopsticks, out dropChopsticks);
+
             AssignPickupAndDropChopsticksListsFromUserInput(i, out pickupChopsticks, out dropChopsticks);
-            //AssignPickupAndDropChopsticksListsFromLocalTesting(i, out pickupChopsticks, out dropChopsticks);
             philosophers[i] = new Philosopher(i, pickupChopsticks, dropChopsticks, this);
 
             // Start the philosopher's coroutine and add it to the list
@@ -70,7 +71,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         }
     }
 
-    private void EnableUIButtons() {
+    private void EnableUIButtons()
+    {
         runButton.interactable = true; // Re-enable the button      
         foreach (string buttonName in GetChopstickButtonNamesInChopsticksHolder())
         {
@@ -89,21 +91,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     }
     // End UI Related Methods
 
-    // This method is used to assign the pickup and drop chopsticks lists
-    // NOTE there IS deadlock in this method
-    private void AssignPickupAndDropChopsticksListsFromLocalTesting(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
-    {
-        pickupChopsticks = new List<int>
-            {
-                i,
-                (i + 1) % NUM_PHILOSOPHERS
-            };
-        dropChopsticks = new List<int>
-            {
-                (i + 1) % NUM_PHILOSOPHERS,
-                i
-            };
-    }
 
     // This method is used to assign the pickup and drop chopsticks lists from the UI
     private void AssignPickupAndDropChopsticksListsFromUserInput(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
@@ -112,31 +99,20 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         dropChopsticks = GameManager.Instance.chopstickData[i].orderDropChopsticks;
     }
 
-    // Partial ordering of chopsticks
-    // This is a solution to the deadlock problem
-    // in the Diner Philosopher's problem.
-    // The idea is to have a partial ordering of the chopsticks
-    // so that a philosopher will pick up the lower numbered
-    // chopstick first and then the higher numbered chopstick.
-    // This way, no two philosophers will pick up the same
-    // chopstick at the same time and there will be no deadlock.
-    // For example, if there are 5 philosophers and 5 chopsticks,
-    // the philosophers will pick up the chopsticks in the following order:
-    // Philosopher 0: 0, 1
-    // Philosopher 1: 1, 2
-    // Philosopher 2: 2, 3
-    // Philosopher 3: 3, 4
-    // Philosopher 4: 4, 0
-    // This way, no two philosophers will pick up the same
-    // chopstick at the same time and there will be no deadlock.
-    // Note that using an even/odd ordering of the chopsticks works too
-    // exmple:
-    // if (i % 2 == 0)
-    // {
-    //   left = (i + 1) % NUM_PHILOSOPHERS;
-    //   right = i;
-    // }
-    private void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    /** 
+        Global ordering of chopsticks to solve the deadlock problem
+        in the Dining Philosophers problem.
+        Philosophers pick up the lower-numbered chopstick first, then the higher-numbered one.
+        This global ordering ensures that no two philosophers will pick up the same chopstick
+        simultaneously, preventing deadlock.
+        
+        Philosopher 0: picks chopsticks 0, then 1
+        Philosopher 1: picks chopsticks 1, then 2
+        Philosopher 2: picks chopsticks 2, then 3
+        Philosopher 3: picks chopsticks 3, then 4
+        Philosopher 4: picks chopsticks 4, then 0
+    */
+    private void GlobalOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         int left = i;
         int right = (i + 1) % NUM_PHILOSOPHERS;
@@ -147,12 +123,59 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 lower,
                 higher
             };
+        // any order would work for dropping the chopsticks
+        // but LIFO (Last In First Out) is the best practice
         dropChopsticks = new List<int>
             {
                 higher,
                 lower
             };
     }
+
+    /** 
+        Partial ordering of chopsticks to solve the deadlock problem
+        in the Dining Philosophers problem.
+        Philosophers pick up chopsticks in a specific order, but the order is not global.
+        Even-numbered philosophers pick chopsticks in a different order than odd-numbered ones.
+        This approach creates a local partial ordering, preventing deadlock by ensuring that no two philosophers
+        will pick up the same chopstick at the same time.
+        
+        Philosopher 0: picks chopsticks 1, then 0
+        Philosopher 1: picks chopsticks 1, then 2
+        Philosopher 2: picks chopsticks 3, then 2
+        Philosopher 3: picks chopsticks 3, then 4
+        Philosopher 4: picks chopsticks 0, then 4
+    */
+    private void PartialOrderSoln(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
+    {
+        int first;
+        int second;
+        if (i % 2 == 0) // odd
+        {
+            // even philosopher
+            first = (i + 1) % NUM_PHILOSOPHERS;
+            second = i;
+        }
+        else
+        {
+            // odd philosopher
+            first = i;
+            second = (i + 1) % NUM_PHILOSOPHERS;
+        }
+        pickupChopsticks = new List<int>
+            {
+                first,
+                second
+            };
+        // any order would work for dropping the chopsticks
+        // but LIFO (Last In First Out) is the best practice
+        dropChopsticks = new List<int>
+            {
+                second,
+                first
+            };
+    }
+
 
 
     private IEnumerator DetectDeadlock(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)

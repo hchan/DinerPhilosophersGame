@@ -558,11 +558,11 @@ RectTransform:
   - {fileID: 1213094935}
   - {fileID: 1796734958}
   - {fileID: 1259574619}
-  m_Father: {fileID: 2054592217}
+  m_Father: {fileID: 1124383951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -469, y: -672}
+  m_AnchoredPosition: {x: 35.99997, y: -242.99997}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &92818307
@@ -3005,11 +3005,11 @@ RectTransform:
   - {fileID: 1925381876}
   - {fileID: 1699599577}
   - {fileID: 522474431}
-  m_Father: {fileID: 2054592217}
+  m_Father: {fileID: 1124383951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -281.99997, y: -1173}
+  m_AnchoredPosition: {x: 223, y: -743.9999}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &576063966
@@ -3414,7 +3414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &620471429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4166,7 +4166,7 @@ GameObject:
   - component: {fileID: 758442769}
   - component: {fileID: 758442768}
   m_Layer: 5
-  m_Name: instructions0
+  m_Name: solution
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4224,18 +4224,40 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "In 1965 a famous computer scientist, <link=\"https://en.wikipedia.org/wiki/Edsger_W._Dijkstra\"><u>Edsger
-    Dijkstra</u></link> (the same person who created the shortest path algorithm,
-    <link=\"https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm\"><u>Dijkstra algorithmn</u></link>)
-    formulated a problem called the <link=\"https://en.wikipedia.org/wiki/Dining_philosophers_problem\"><u>Dining
-    philosophers problem</u></link>\n\nIn this version of problem (that uses chopsticks
-    instead of forks), your mission is to esablish an order for each philsopher to
-    <b>pickup</b> their adjacent chopsticks, eat and <b>drop</b> their chopsticks
-    thus creating a fair system to enjoy their meal \n\nEach philsopher will\n\n 
-    * think\n  * try to pickup both adjacent chopsticks ( this is where you dictate
-    the soln )\n  * eat\n  * drop chopstcks  ( this is where you dictate the soln
-    )\n  * repeat\n\n\nAssume infinite amount of stir fry and infinite amount of
-    stomach space (<link=\"https://www.youtube.com/watch?v=V0_PU7GEJPg\"><u>reference</u></link>)"
+  m_text: 'For a <link="https://en.wikipedia.org/wiki/Global_serializability"><u>global
+    order</u></link> each philosopher picks up the chopstick with the lowest number
+    first
+
+    philosopher0: pickups chopstick0, chopstick1
+
+    philosopher1: pickups
+    chopstick1, chopstick2
+
+    philosopher2: pickups chopstick2, chopstick3
+
+    philosopher3:
+    pickups chopstick3, chopstick4
+
+    philosopher4: pickups chopstick0, chopstick4
+    [ NOT: chopstick4, chopstick0 ]
+
+
+    For a <link="https://en.wikipedia.org/wiki/Partially_ordered_set"><u>partial
+    order</u></link> each even-numbered philosophers picks up their left chopstick
+    before the right, and odd-numbered philosophers pick up their right chopstick
+    before the left.
+
+    philosopher0: pickups chopstick1, chopstick0
+
+    philosopher1:
+    pickups chopstick1, chopstick2
+
+    philosopher2: pickups chopstick3, chopstick2
+
+    philosopher3:
+    pickups chopstick3, chopstick4
+
+    philosopher4: pickups chopstick0, chopstick4 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4467,7 +4489,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &854362242
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5722,6 +5744,9 @@ RectTransform:
   - {fileID: 2134804827}
   - {fileID: 1944238253}
   - {fileID: 2054592217}
+  - {fileID: 1493992447}
+  - {fileID: 57333965}
+  - {fileID: 566190791}
   - {fileID: 37299999}
   - {fileID: 1240219759}
   m_Father: {fileID: 1941081754}
@@ -6215,7 +6240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.000030517578, y: 141.81503}
+  m_AnchoredPosition: {x: 0.00021362305, y: 141.81503}
   m_SizeDelta: {x: -4.04, y: 275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1188262589
@@ -7141,7 +7166,7 @@ RectTransform:
   m_Father: {fileID: 1210332877}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.9999859, y: 1}
+  m_AnchorMax: {x: 0.9999984, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7609,11 +7634,11 @@ RectTransform:
   - {fileID: 358246323}
   - {fileID: 636940036}
   - {fileID: 1861486361}
-  m_Father: {fileID: 2054592217}
+  m_Father: {fileID: 1124383951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -469, y: -417}
+  m_AnchoredPosition: {x: 35.99997, y: 12}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1498990399
@@ -9285,7 +9310,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1394507117}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999859
+  m_Size: 0.9999984
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11081,10 +11106,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1493992447}
-  - {fileID: 57333965}
-  - {fileID: 566190791}
+  m_Children: []
   m_Father: {fileID: 1124383951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

@@ -20,5 +20,7 @@ public class RunGlobalOrderSolution : MonoBehaviour
     public void OnClick()
     {
         Debug.Log("Run Global Order Solution Button clicked");
+        GameManager.Instance.Get("TabManager").GetComponent<TabManager>().ShowTab("diningTable");
+        GameManager.Instance.Get("runDinerPhilosophersGame").GetComponent<RunDinerPhilosophersGame>().BeginSimulation();
     }
 }

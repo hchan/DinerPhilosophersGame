@@ -8,9 +8,14 @@ public class TabManager : MonoBehaviour
 
 
     public Button continueButton; // Assign your button in the inspector
-    public void ShowTab(int index)
+    public void ShowTab(string name)
     {
-
+        Debug.Log("Continue Button clicked");
+        SetButtonsAlpha(0.5f); // Set all buttons to 50% alpha
+        HideAllPanels(); // Hide all panels
+        RectTransform panel = GameManager.Instance.Get($"{name}Panel").GetComponent<RectTransform>();
+        panel.gameObject.SetActive(true); // Show the dining table panel
+        SetButtonAlpha(GameManager.Instance.Get($"{name}Button").GetComponent<Button>(), 1f); // Set the clicked button to 100% alpha 
     }
 
     void Start()

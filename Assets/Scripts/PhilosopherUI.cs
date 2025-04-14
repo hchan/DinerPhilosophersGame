@@ -30,7 +30,7 @@ public class PhilosopherUI : MonoBehaviour
         gameManager.selectedPhilosopherId = philosopherId;
         // Tigress, Monkey, Viper, Crane, Mantis
         gameManager.Get("philosopherSelectedText").GetComponent<TMP_Text>().text =
-            gameManager.philosopherNames[philosopherId];
+            gameManager.philosopherNames[philosopherId] + " : philosopher" + philosopherId;
         ResetChopsticksUI();
         SetAlpha(gameManager.fullAlpha);
     }

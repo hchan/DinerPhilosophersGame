@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+/**
+ * This script simulates the Diner Philosophers problem using Unity.
+ * It creates a number of philosophers and chopsticks, and allows the philosophers to pick up and drop chopsticks while eating.
+ * The simulation runs for a specified amount of time, and detects deadlocks.
+ */
 public class RunDinerPhilosophersGame : MonoBehaviour
 {
     private const int NUM_PHILOSOPHERS = 5;
@@ -56,6 +60,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         StartCoroutine(StopSimulationAfterSeconds(this, SIMULATION_TIME));
     }
 
+    // UI Related Methods
     private void DisableUIButtons()
     {
         runButton.interactable = false; // Disable the button to prevent multiple clicks
@@ -82,7 +87,10 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             "orderChopstickDrop0", "orderChopstickDrop1"
         };
     }
+    // End UI Related Methods
 
+    // This method is used to assign the pickup and drop chopsticks lists
+    // NOTE there IS deadlock in this method
     private void AssignPickupAndDropChopsticksListsFromLocalTesting(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         pickupChopsticks = new List<int>
@@ -96,6 +104,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 i
             };
     }
+
+    // This method is used to assign the pickup and drop chopsticks lists from the UI
     private void AssignPickupAndDropChopsticksListsFromUserInput(int i, out List<int> pickupChopsticks, out List<int> dropChopsticks)
     {
         pickupChopsticks = GameManager.Instance.chopstickData[i].orderPickupChopsticks;
@@ -143,6 +153,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
                 lower
             };
     }
+
 
     private IEnumerator DetectDeadlock(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
     {
@@ -332,8 +343,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             Log($"Hint: Philosopher {PHILOSOPHER_NAMES[philosopher.id]} has {philosopher.pickupChopsticks.Count} chopstick(s) to pick up.");
             Log("In order to eat, a philosopher needs to pick up 2 chopsticks.");
         }
-        //while (philosopher.keepRunning && (!chopsticks[leftChopstickId].isHeld || !chopsticks[rightChopstickId].isHeld))
-        //{
+
         int lockCount = 0; // you need 2 chopsticks to eat
         while (lockCount != 2 && philosopher.keepRunning)
         {

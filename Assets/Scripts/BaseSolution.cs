@@ -5,25 +5,96 @@ using UnityEngine.UI;
 public class BaseSolution : MonoBehaviour
 {
     public GameObject baseSolution;
-
-    void Start()
-    {
+    
+    /** 
+        Global ordering of chopsticks to solve the deadlock problem
+        in the Dining Philosophers problem.
+        Philosophers pick up the lower-numbered chopstick first, then the higher-numbered one.
+        This global ordering ensures that no two philosophers will pick up the same chopstick
+        simultaneously, preventing deadlock.
         
+        Philosopher 0: picks chopsticks 0, then 1
+        Philosopher 1: picks chopsticks 1, then 2
+        Philosopher 2: picks chopsticks 2, then 3
+        Philosopher 3: picks chopsticks 3, then 4
+        Philosopher 4: picks chopsticks 4, then 0
+    */
+    public List<int>[] GlobalOrderSolution(int philosopherId)
+    {
+        int left = philosopherId;
+        int right = (philosopherId + 1) % RunDinerPhilosophersGame.NUM_PHILOSOPHERS;
+        int lower = Mathf.Min(left, right); // partial ordering
+        int higher = Mathf.Max(left, right); // partial ordering
+        List<int> pickupChopsticks = new List<int>
+            {
+                lower,
+                higher
+            };
+        // any order would work for dropping the chopsticks
+        // but LIFO (Last In First Out) is the best practice
+        List<int> dropChopsticks = new List<int>
+            {
+                higher,
+                lower
+            };
+        return new List<int>[] { pickupChopsticks, dropChopsticks };
     }
 
-    void Update()
-    {
+    /** 
+        Partial ordering of chopsticks to solve the deadlock problem
+        in the Dining Philosophers problem.
+        Philosophers pick up chopsticks in a specific order, but the order is not global.
+        Even-numbered philosophers pick chopsticks in a different order than odd-numbered ones.
+        This approach creates a local partial ordering, preventing deadlock by ensuring that no two philosophers
+        will pick up the same chopstick at the same time.
         
+        Philosopher 0: picks chopsticks 1, then 0
+        Philosopher 1: picks chopsticks 1, then 2
+        Philosopher 2: picks chopsticks 3, then 2
+        Philosopher 3: picks chopsticks 3, then 4
+        Philosopher 4: picks chopsticks 0, then 4
+    */
+    public List<int>[] PartialOrderSolution(int philosopherId)
+    {
+        int first;
+        int second;
+        if (philosopherId % 2 == 0) // odd
+        {
+            // even philosopher
+            first = (philosopherId + 1) % RunDinerPhilosophersGame.NUM_PHILOSOPHERS;
+            second = philosopherId;
+        }
+        else
+        {
+            // odd philosopher
+            first = philosopherId;
+            second = (philosopherId + 1) % RunDinerPhilosophersGame.NUM_PHILOSOPHERS;
+        }
+        List<int> pickupChopsticks = new List<int>
+            {
+                first,
+                second
+            };
+        // any order would work for dropping the chopsticks
+        // but LIFO (Last In First Out) is the best practice
+        List<int> dropChopsticks = new List<int>
+            {
+                second,
+                first
+            };
+        return new List<int>[] { pickupChopsticks, dropChopsticks };
+
     }
+
 
     public void GlobalOrderSolution()
     {
-        ExecuteSolution((runDinerPhilosophersGame, i) => runDinerPhilosophersGame.GlobalOrderSolution(i));
+        ExecuteSolution((runDinerPhilosophersGame, i) => GlobalOrderSolution(i));
     }
 
     public void PartialOrderSolution()
     {
-        ExecuteSolution((runDinerPhilosophersGame, i) => runDinerPhilosophersGame.PartialOrderSolution(i));
+        ExecuteSolution((runDinerPhilosophersGame, i) => PartialOrderSolution(i));
     }
 
     private void ExecuteSolution(System.Func<RunDinerPhilosophersGame, int, List<int>[]> solutionStrategy)

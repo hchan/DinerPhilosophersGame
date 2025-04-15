@@ -53,6 +53,8 @@ public class TabManager : MonoBehaviour
         RectTransform panel = GameManager.Instance.Get("diningTablePanel").GetComponent<RectTransform>();
         panel.gameObject.SetActive(true); // Show the dining table panel
         SetButtonAlpha(GameManager.Instance.Get("diningTableButton").GetComponent<Button>(), 1f); // Set the clicked button to 100% alpha 
+        // Reset the alpha of all objects in the DiningTable panel
+        GameManager.Instance.ResetAlpha();
     }
 
     // General method to handle button click
@@ -65,6 +67,9 @@ public class TabManager : MonoBehaviour
         RectTransform panel = GameManager.Instance.Get(buttonName.Replace("Button", "") + "Panel").GetComponent<RectTransform>();
         panel.gameObject.SetActive(true); // Show the corresponding panel
         SetButtonAlpha(button, 1f); // Set the clicked button to 100% alpha
+        if (buttonName == "diningTableButton") {
+            GameManager.Instance.ResetAlpha(); // Reset the alpha of all objects in the DiningTable panel
+        }
     }
 
     void SetButtonsAlpha(float alpha)

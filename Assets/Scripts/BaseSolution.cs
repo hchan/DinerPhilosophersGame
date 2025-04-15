@@ -1,7 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/**
+    This script provides two solutions to the Dining Philosophers problem:
+    1. Global Order Solution: A global ordering of chopsticks to prevent deadlock.
+    2. Partial Order Solution: A partial ordering of chopsticks to prevent deadlock.
+    
+    The script also includes methods to execute these solutions and update the game state accordingly.
+*/
 public class BaseSolution : MonoBehaviour
 {
     public GameObject baseSolution;

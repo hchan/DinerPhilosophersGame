@@ -14,10 +14,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     public const int NUM_PHILOSOPHERS = 5;
     public const int SIMULATION_TIME = 5; // seconds
     public static readonly string[] PHILOSOPHER_NAMES = { "Tigress", "Monkey", "Viper", "Crane", "Mantis" };
-
     private readonly Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
     private readonly Chopstick[] chopsticks = new Chopstick[NUM_PHILOSOPHERS];
-
 
     // Making a scrollable textArea in Unity is nowhere as straight forward
     // as JS/HTML. See:
@@ -33,8 +31,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     }
 
     // This method is called to start the simulation (from the Run button)
-
-
     public void BeginSimulation()
     {
         Debug.Log("Starting Diner Philosophers Game");
@@ -71,7 +67,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             GameManager.Instance.Get(buttonName).GetComponent<Button>().interactable = false;
         }
     }
-
     private void EnableUIButtons()
     {
         runButton.interactable = true; // Re-enable the button      
@@ -80,7 +75,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
             GameManager.Instance.Get(buttonName).GetComponent<Button>().interactable = true;
         }
     }
-
     private string[] GetChopstickButtonNamesInChopsticksHolder()
     {
         return new string[] {
@@ -102,8 +96,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         };
     }
 
-
-
+    // This method is used to detect deadlocks in the simulation
     private IEnumerator DetectDeadlock(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
     {
         while (IsSimulationComplete() == false)
@@ -133,6 +126,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         }
     }
 
+    // This method is used to stop the simulation after a specified time
     private IEnumerator StopSimulationAfterSeconds(RunDinerPhilosophersGame runDinerPhilosophersGame, float seconds)
     {
         yield return new WaitForSeconds(seconds);
@@ -152,6 +146,7 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom of the console
     }
 
+    // This method is used to summarize the simulation results
     private void Summary(RunDinerPhilosophersGame runDinerPhilosophersGame)
     {
 
@@ -179,7 +174,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
     }
 
     // Check if all philosopher coroutines have completed
-
     private bool IsSimulationComplete()
     {
         foreach (Philosopher philosopher in philosophers)
@@ -199,7 +193,6 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         public List<int> dropChopsticks = new List<int>();
         private readonly RunDinerPhilosophersGame runDinerPhilosophersGame;
         public bool keepRunning = true;
-
         public int stirFryEaten = 0; // Number of stir fry eaten - let's assume the unit is a bowl
         private bool isDone = false;
 
@@ -252,9 +245,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         public bool keepRunning = true;
 
         // this can be used to simulate atomic-like behavior
-        // also is reentrant
+        // also is reentrant meaning you can pick up the same chopstick if you are the same philosopher
         public int isHeldByPhilosopherId = -1; // -1 means no philosopher is holding the chopstick
-
 
         // Try to pick up the chopstick (atomic-like behavior)
         public IEnumerator PickUp(int philosopherId)
@@ -284,6 +276,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         }
     }
 
+    // This method is used to pick up chopsticks for a philosopher
+    // The order of the pickup is determined by the philsopher
     public IEnumerator PickupChopsticks(Philosopher philosopher)
     {
 
@@ -305,6 +299,8 @@ public class RunDinerPhilosophersGame : MonoBehaviour
         }
     }
 
+    // This method is used to drop chopsticks for a philosopher
+    // The order of the drop is determined by the philsopher
     public IEnumerator DropChopsticks(Philosopher philosopher)
     {
         // Loop through each chopstick in the dropChopsticks list

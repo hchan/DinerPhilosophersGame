@@ -1313,7 +1313,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.44, y: -397.51}
+  m_AnchoredPosition: {x: 11, y: -379}
   m_SizeDelta: {x: 1640.07, y: 97.64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &326064634
@@ -1349,8 +1349,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <u>Note:</u> The drop order doesn't matter, but it is recommended that
+  m_text: '<b>Note:</b> The drop order doesn''t matter, but it is recommended that
     you drop in the reverse order that you pickup (aka LIFO - Last In First Out)
+
+    See
+    also: <link="https://github.com/hchan/DinerPhilosophersGame/blob/main/Assets/Scripts/BaseSolution.cs"><u>code</u></link>
+    soln'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3429,7 +3433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &620471429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4486,7 +4490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &854362242
 RectTransform:
   m_ObjectHideFlags: 0

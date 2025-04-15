@@ -103,6 +103,11 @@ public class BaseSolution : MonoBehaviour
         ExecuteSolution((runDinerPhilosophersGame, i) => PartialOrderSolution(i));
     }
 
+    /**
+        Execute the solution strategy for each philosopher.
+        This method sets up the game state by updating the available and ordered chopsticks for each philosopher.
+        It then invokes the run button click event to start the game with the specified solution strategy.
+    */
     private void ExecuteSolution(System.Func<RunDinerPhilosophersGame, int, List<int>[]> solutionStrategy)
     {
         GameManager.Instance.Get("TabManager").GetComponent<TabManager>().ShowTab("diningTable");

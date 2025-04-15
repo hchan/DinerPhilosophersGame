@@ -3429,7 +3429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &620471429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5509,7 +5509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1087103369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10314,7 +10314,12 @@ MonoBehaviour:
     Hint 2: The order in which you drop the chopsticks
     doesn''t matter, as long as both are dropped. Dropping occurs after acquisition,
     and the Coffman conditions for <link="https://en.wikipedia.org/wiki/Deadlock_(computer_science)"><u>deadlock</u></link>
-    only apply during acquisition.'
+    only apply during acquisition.
+
+
+    Hint 3: Review the source code for get a
+    better idea of how this <link="https://github.com/hchan/DinerPhilosophersGame/blob/main/Assets/Scripts/RunDinerPhilosophersGame.cs"><u>script</u></link>
+    is ran'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

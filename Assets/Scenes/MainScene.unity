@@ -1291,7 +1291,7 @@ GameObject:
   - component: {fileID: 326064635}
   - component: {fileID: 326064634}
   m_Layer: 5
-  m_Name: noteDropOrder
+  m_Name: noteDropOrderText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1313,8 +1313,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11, y: -379}
-  m_SizeDelta: {x: 1640.07, y: 97.64}
+  m_AnchoredPosition: {x: 17.777, y: -401.66}
+  m_SizeDelta: {x: 1653.6, y: 142.96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &326064634
 MonoBehaviour:

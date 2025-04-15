@@ -89,7 +89,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
       # Publish to Itch.IO
-      - name: Deploy to itch.io https://hchan-yvr.itch.io/dinerphilosophersgame
+      - name: Deploy to itch.io
         uses: manleydev/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
@@ -100,8 +100,8 @@ jobs:
       
       - name: Summary
         run: |
-          echo "Deployment Summary"
-          echo "==================="
-          echo "GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}" >> $GIHUB_STEP_SUMMARY
-          echo "Itch.io URL: https://hchan-yvr.itch.io/dinerphilosophersgame" >> $GITHUB_STEP_SUMMARY
-          echo "Build Artifact Path: build/WebGL/WebGL" >> $GITHUB_STEP_SUMMARY
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **GitHub Pages URL:** [${{ steps.deployment.outputs.page_url }}](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **Itch.io URL:** [https://hchan-yvr.itch.io/dinerphilosophersgame](https://hchan-yvr.itch.io/dinerphilosophersgame)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Artifact Path:** \`build/WebGL/WebGL\`" >> $GITHUB_STEP_SUMMARY
